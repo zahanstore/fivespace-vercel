@@ -30,8 +30,8 @@
   --concrete-pale:#E8E4E0;   /* Backgrounds, cards        */
 
   /* Neutrals */
-  --cream:        #F4F4F2;   /* Cool white — page bg      */
-  --cream-dk:     #EBEBEA;   /* Slightly darker            */
+  --cream:        #E8E4E0;   /* Warm grey sandstone — page bg */
+  --cream-dk:     #DDD9D4;   /* Slightly darker sandstone  */
   --earth:        #3A3630;   /* Near-black body text      */
   --earth-dk:     #1C1A18;   /* Deepest dark              */
 
@@ -68,7 +68,7 @@
 
 /* ── DARK MODE ───────────────────────────────── */
 [data-theme="dark"] {
-  --cream:         #091824;
+  --cream:         #0A1620;
   --cream-dk:      #0F2030;
   --earth:         #C8E8F8;
   --earth-dk:      #E8F4FF;
@@ -146,7 +146,7 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
   position:   fixed;
   top:        0; left: 0; right: 0;
   z-index:    100;
-  padding:    1.25rem var(--gutter);
+  padding:    0.6rem var(--gutter);
   display:    flex;
   align-items: center;
   justify-content: space-between;
@@ -165,8 +165,8 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 
 .nav-logo {
   font-family:    var(--font-display);
-  font-size:      1.6rem;
-  font-weight:    300;
+  font-size:      1.7rem;
+  font-weight:    500;
   color:          var(--sky-mist);
   letter-spacing: 0.05em;
 }
@@ -188,10 +188,11 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 }
 
 .nav-links a {
-  font-size:      0.68rem;
-  letter-spacing: 0.2em;
+  font-size:      0.78rem;
+  font-weight:    600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color:          rgba(200,232,248,0.82);
+  color:          rgba(200,232,248,0.92);
   transition:     color 0.3s;
 }
 
