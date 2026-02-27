@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Five Space World</title>
+  <meta name="description" content="The complete project archive of Five Space World — civic, cultural, institutional architecture." />
+  <link rel="canonical" href="https://fivespace.zahan.one/projects" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- Nav injected by components.js -->
+
+  <div class="page-header" id="main-content" tabindex="-1" style="outline:none;" aria-label="Projects archive">
+    <p class="section-label">Our Work</p>
+    <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:300; color:var(--sky-dk);">All Projects</h1>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-cat="all">All</button>
+  </div>
+
+  <div class="all-projects-grid" id="allProjects">
+    <div class="project-skeleton"></div>
+    <div class="project-skeleton"></div>
+    <div class="project-skeleton"></div>
+    <div class="project-skeleton"></div>
+    <div class="project-skeleton"></div>
+    <div class="project-skeleton"></div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => document.body.classList.add('loaded'));
+    if (document.readyState === 'complete') document.body.classList.add('loaded');
+  </script>
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initComponents({ activePage: 'projects' });
+    });
+  </script>
+  <script src="js/projects.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Five Space World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <!-- Nav injected by components.js -->
+
+  <div id="projectContent">
+    <div style="min-height:60vh; display:flex; align-items:center; justify-content:center;">
+      <p style="font-family:var(--font-display); font-size:1.5rem; font-style:italic; color:var(--sage);">Loading…</p>
+    </div>
+  </div>
+
+  <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+  <script>
+    window.addEventListener('load', () => document.body.classList.add('loaded'));
+    if (document.readyState === 'complete') document.body.classList.add('loaded');
+  </script>
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      initComponents({ activePage: 'projects' });
+
+      const backTop = document.getElementById('backTop');
+      window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 400));
+      backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      const slug = new URLSearchParams(window.location.search).get('slug');
+      const container = document.getElementById('projectContent');
+
+      if (!slug) {
+        container.innerHTML = `<div style="text-align:center; padding:8rem var(--gutter);">
+          <h1 style="font-family:var(--font-display); font-size:3rem; font-weight:300;">Project not found</h1>
+          <a href="projects" class="btn-outline" style="display:inline-block; margin-top:2rem;">All Projects</a>
+        </div>`;
+        return;
+      }
+
+      try {
+        const p = await getProjectBySlug(slug);
+
+        document.title = `${p.title} — Five Space World`;
+        const meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.content = p.description ? p.description.substring(0, 160) : p.title;
+
+        const gallery = Array.isArray(p.gallery) ? p.gallery : [];
+
+        container.innerHTML = `
+          ${p.main_image_url ? `
+          <img class="project-hero-img"
+            src="${p.main_image_url}"
+            alt="${p.title}"
+            style="padding-top:4rem;" />
+          ` : '<div style="padding-top:5rem;"></div>'}
+
+          <div class="wrap" style="padding-top:var(--space-md); padding-bottom:var(--space-xl);">
+            <a href="projects" style="font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--sky); display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:var(--space-md);">
+              ← All Projects
+            </a>
+
+            <p class="section-label">${p.category || 'Project'}</p>
+            <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:300; color:var(--sky-dk); margin-bottom:var(--space-sm);">${p.title}</h1>
+
+            <div class="project-meta-bar">
+              ${p.location ? `<div class="project-meta-item"><div class="label">Location</div><div class="value">${p.location}</div></div>` : ''}
+              ${p.year     ? `<div class="project-meta-item"><div class="label">Year</div><div class="value">${p.year}</div></div>` : ''}
+              ${p.category ? `<div class="project-meta-item"><div class="label">Type</div><div class="value">${p.category}</div></div>` : ''}
+              ${p.materials ? `<div class="project-meta-item"><div class="label">Materials</div><div class="value">${p.materials}</div></div>` : ''}
+            </div>
+
+            ${p.description ? `
+            <div style="max-width:680px; font-size:1.05rem; line-height:1.9; color:var(--slate); margin-bottom:var(--space-lg);">
+              ${mdToHtml(p.description)}
+            </div>` : ''}
+
+            ${gallery.length ? `
+            <div class="gallery-grid">
+              ${gallery.map(img => `
+                <figure style="margin:0;">
+                  <img src="${img.url}" alt="${img.caption || p.title}" loading="lazy" />
+                  ${img.caption ? `<figcaption style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--sage); margin-top:0.4rem;">${img.caption}</figcaption>` : ''}
+                </figure>
+              `).join('')}
+            </div>` : ''}
+          </div>
+        `;
+
+      } catch (err) {
+        container.innerHTML = `<div style="text-align:center; padding:8rem var(--gutter);">
+          <h1 style="font-family:var(--font-display); font-size:3rem; font-weight:300;">Project not found</h1>
+          <a href="projects" class="btn-outline" style="display:inline-block; margin-top:2rem;">All Projects</a>
+        </div>`;
+      }
+    });
+  </script>
+</body>
+</html>

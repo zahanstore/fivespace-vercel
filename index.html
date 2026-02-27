@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Space World — Architecture at Civilisational Scale</title>
+  <meta name="description" content="Five Space World is an architecture and design practice working at civic and institutional scale — cultural centres, public buildings, and environments that endure." />
+  <link rel="canonical" href="https://fivespace.zahan.one" />
+  <meta property="og:title"       content="Five Space World" />
+  <meta property="og:description" content="Architecture at civilisational scale." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://fivespace.zahan.one" />
+  <meta property="og:image"       content="https://fivespace.zahan.one/assets/og-image.jpg" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── Hero ── */
+    .hero-line { display: block; }
+    .hero-line-indent { padding-left: clamp(2rem, 8vw, 8rem); font-style: italic; }
+
+    /* ── Featured projects ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: var(--space-lg);
+    }
+
+    /* ── Philosophy ── */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+    }
+
+    .philosophy-item {
+      padding: var(--space-md);
+      border: 1px solid var(--stone-lt);
+    }
+
+    .philosophy-item h4 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: var(--sky);
+      margin-bottom: var(--space-xs);
+    }
+
+    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); }
+
+    /* ── Contact ── */
+    .contact-section {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+
+    @media (max-width: 768px) { .contact-section { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Nav injected by components.js -->
+
+  <!-- ── HERO ──────────────────────────────────── -->
+  <section class="hero" aria-label="Five Space World — Architecture practice">
+    <div class="hero-ornament" aria-hidden="true"></div>
+
+    <p class="hero-eyebrow">Five Space World</p>
+
+    <h1 class="hero-title" aria-label="Architecture at the scale of civilisation">
+      <span class="hero-line">Architecture</span>
+      <span class="hero-line hero-line-indent">at the scale</span>
+      <span class="hero-line">of civilisation</span>
+    </h1>
+
+    <p class="hero-subtitle">Cultural · Civic · Institutional · Public</p>
+
+    <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
+  </section>
+
+  <!-- ── FEATURED WORK ──────────────────────────── -->
+  <section class="scroll-target" id="work" aria-label="Featured projects">
+    <div class="wrap">
+      <p class="section-label">Selected Work</p>
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; color:var(--sky-dk);">Projects</h2>
+
+      <div class="featured-grid" id="featuredProjects">
+        <div class="project-skeleton"></div>
+        <div class="project-skeleton"></div>
+        <div class="project-skeleton"></div>
+      </div>
+
+      <div style="text-align:center; margin-top:var(--space-lg);">
+        <a href="projects" class="btn-outline">All Projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ──────────────────────────────────── -->
+  <section class="scroll-target" aria-label="Practice statistics">
+    <div class="wrap">
+      <div class="stats-bar" style="background:linear-gradient(90deg,#2A7FBA 0%,#1A5276 100%);">
+        <div class="stat-item">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Years of Practice</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Countries</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Awards</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHILOSOPHY ─────────────────────────────── -->
+  <section class="scroll-target" aria-label="Design philosophy">
+    <div class="wrap">
+      <p class="section-label">Our Approach</p>
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; max-width:700px; color:var(--sky-dk);">
+        Buildings that outlast their moment
+      </h2>
+      <p style="max-width:600px; margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
+        We believe that civic and cultural architecture carries a special responsibility — to speak not just to its present users but to future generations. Every Five Space World project begins with a question: what endures?
+      </p>
+
+      <div class="philosophy-grid">
+        <div class="philosophy-item">
+          <h4>Public Scale</h4>
+          <p>We design at the scale of institutions — cultural centres, civic halls, libraries, and infrastructure — spaces that become part of the city's identity.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4>Material Honesty</h4>
+          <p>Concrete that shows its formwork. Stone that carries the quarry. Timber that remembers the forest. We never disguise what a building is made of.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4>Enduring Form</h4>
+          <p>Trends corrode. Geometry endures. Our formal language is rooted in proportional systems that have proven themselves across centuries.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4>Community First</h4>
+          <p>Every building exists in a community. We spend as much time listening to those who will inhabit our buildings as we do drawing them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ───────────────────────────────────── -->
+  <section class="scroll-target" id="about" aria-label="About the practice">
+    <div class="about-grid">
+      <div>
+        <p class="section-label">The Practice</p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,3.5rem); font-weight:300; color:var(--sky-dk);">
+          Five Space World
+        </h2>
+      </div>
+      <div>
+        <p style="font-size:1.05rem; line-height:1.9; color:var(--slate);">
+          Five Space World was founded on the belief that architecture is the most public of arts. Unlike a painting or a poem, a building cannot be avoided — it occupies the shared world, shaping the experience of everyone who passes through or near it.
+        </p>
+        <p style="margin-top:var(--space-sm); line-height:1.9; color:var(--slate);">
+          Our work spans cultural institutions, civic buildings, educational campuses, and public infrastructure. We approach each project as a long-term investment in the places and communities we serve.
+        </p>
+        <p style="margin-top:var(--space-md); font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--sky-lt);">
+          Sister practice:
+          <a href="https://safa.zahan.one" style="color:var(--sky); text-decoration:underline; text-underline-offset:3px;">Safa Zahan</a>
+          — boutique interiors &amp; residences
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ─────────────────────────────────── -->
+  <section class="scroll-target" id="contact" aria-label="Contact the practice">
+    <div class="contact-section">
+      <div class="contact-info">
+        <p class="section-label">Get in Touch</p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--sky-dk);">Start a conversation</h2>
+        <p style="margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
+          We work on a select number of projects at a time. If you are planning a civic, cultural, or institutional building, we would like to hear from you.
+        </p>
+        <div class="contact-detail">
+          <div class="contact-detail-item">
+            <span class="label">Email</span>
+            <span class="value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="52212627363b3d12343b243721223331377c28333a333c7c3d3c37">[email&#160;protected]</a></span>
+          </div>
+          <div class="contact-detail-item">
+            <span class="label">Location</span>
+            <span class="value">Dhaka, Bangladesh</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div id="formSuccess" style="display:none; padding:var(--space-md); background:var(--sky-dk); color:var(--cream); font-size:0.85rem; letter-spacing:0.05em; margin-bottom:var(--space-md);">
+          ✓ &nbsp;Thank you. We will be in touch shortly.
+        </div>
+
+        <form id="contactForm" novalidate aria-label="Project enquiry form">
+          <!-- Honeypot -->
+          <div style="position:absolute; left:-9999px;" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label for="first_name">First Name *</label>
+              <input type="text" id="first_name" name="first_name" required />
+            </div>
+            <div class="form-group">
+              <label for="last_name">Last Name *</label>
+              <input type="text" id="last_name" name="last_name" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label for="project_type">Project Type</label>
+              <select id="project_type" name="project_type">
+                <option value="">Select…</option>
+                <option>Cultural Centre</option>
+                <option>Civic Building</option>
+                <option>Educational Campus</option>
+                <option>Library</option>
+                <option>Museum</option>
+                <option>Public Infrastructure</option>
+                <option>Mixed Use</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="location">Project Location</label>
+              <input type="text" id="location" name="location" placeholder="City, Country" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" style="min-height:120px;" required placeholder="Tell us about your project — scale, programme, timeline, budget range…"></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn" style="width:100%;">Send Enquiry</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer injected by components.js -->
+
+  <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    window.addEventListener('load', () => document.body.classList.add('loaded'));
+    if (document.readyState === 'complete') document.body.classList.add('loaded');
+  </script>
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initComponents({ activePage: 'home' });
+
+      // ── Scroll animations
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll('.scroll-target').forEach(el => observer.observe(el));
+
+      // ── Back to top
+      const backTop = document.getElementById('backTop');
+      window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 400));
+      backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // ── Form validation helpers
+      function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+      function setFieldState(el, valid) {
+        el.classList.toggle('invalid', !valid);
+        el.setAttribute('aria-invalid', String(!valid));
+      }
+
+      document.querySelectorAll('#contactForm [required]').forEach(el => {
+        el.addEventListener('blur', () => {
+          const ok = el.type === 'email' ? validateEmail(el.value) : el.value.trim().length > 0;
+          setFieldState(el, ok);
+        });
+        el.addEventListener('input', () => { if (el.classList.contains('invalid')) setFieldState(el, true); });
+      });
+
+      document.getElementById('contactForm').addEventListener('submit', async e => {
+        e.preventDefault();
+
+        if (e.target.website && e.target.website.value) {
+          e.target.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+          return;
+        }
+
+        let valid = true;
+        document.querySelectorAll('#contactForm [required]').forEach(el => {
+          const ok = el.type === 'email' ? validateEmail(el.value) : el.value.trim().length > 0;
+          setFieldState(el, ok);
+          if (!ok) valid = false;
+        });
+        if (!valid) return;
+
+        const btn = document.getElementById('submitBtn');
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+
+        try {
+          const formData = {
+            first_name:   e.target.first_name.value,
+            last_name:    e.target.last_name.value,
+            email:        e.target.email.value,
+            project_type: e.target.project_type.value,
+            location:     e.target.location.value,
+            message:      e.target.message.value,
+          };
+
+          await submitContactForm(formData);
+
+          fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...formData, brand: SITE_CONFIG.brand }),
+          }).catch(err => console.warn('Email notification failed:', err));
+
+          e.target.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+
+        } catch (err) {
+          console.error(err);
+          btn.textContent = 'Send Enquiry';
+          btn.disabled = false;
+          alert('There was a problem sending your message. Please try again or email us directly.');
+        }
+      });
+    });
+
+    // ── Featured projects
+    async function loadFeaturedProjects() {
+      const container = document.getElementById('featuredProjects');
+      if (!container) return;
+      try {
+        const projects = await getProjects(true);
+        if (!projects.length) {
+          container.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:4rem 0;">
+              <p style="font-family:var(--font-display); font-size:1.5rem; font-style:italic; color:var(--sage);">Projects coming soon.</p>
+            </div>`;
+          return;
+        }
+        container.innerHTML = projects.slice(0, 3).map(p => `
+          <a class="project-card" href="project.html?slug=${p.slug}" aria-label="View project: ${p.title}">
+            <div style="overflow:hidden;">
+              <img class="project-card-img"
+                src="${p.main_image_url || ''}"
+                alt="${p.title}" loading="lazy" />
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-card-title">${p.title}</h3>
+              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' �
