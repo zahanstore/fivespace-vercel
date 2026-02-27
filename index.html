@@ -386,4 +386,15 @@
             </div>
             <div class="project-card-body">
               <h3 class="project-card-title">${p.title}</h3>
-              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' �
+              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' · ')}</p>
+            </div>
+          </a>`).join('');
+      } catch (err) {
+        console.warn('Could not load featured projects:', err);
+      }
+    }
+
+    loadFeaturedProjects();
+  </script>
+</body>
+</html>
