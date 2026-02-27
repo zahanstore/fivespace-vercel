@@ -31,18 +31,25 @@ const SITE_CONFIG = {
 // SUPABASE CLIENT
 // ============================================
 
-if (typeof supabase === 'undefined') {
-  console.error('[FS] Supabase SDK not loaded — check CDN script tag.');
+// ── Safe Supabase init — never crashes the page ──
+let db = null;
+try {
+  if (typeof supabase !== 'undefined') {
+    const { createClient } = supabase;
+    db = createClient(SITE_CONFIG.supabase.url, SITE_CONFIG.supabase.anonKey);
+  } else {
+    console.warn('[FS] Supabase SDK not loaded — project cards will be empty.');
+  }
+} catch(e) {
+  console.warn('[FS] Supabase init failed:', e.message);
 }
-
-const { createClient } = supabase;
-const db = createClient(SITE_CONFIG.supabase.url, SITE_CONFIG.supabase.anonKey);
 
 // ============================================
 // DATA HELPERS
 // ============================================
 
 async function getProjects(featuredOnly = false) {
+  if (!db) return [];
   let query = db
     .from('projects')
     .select('*')
@@ -58,6 +65,7 @@ async function getProjects(featuredOnly = false) {
 }
 
 async function getProjectBySlug(slug) {
+  if (!db) return null;
   const { data, error } = await db
     .from('projects')
     .select('*')
@@ -69,6 +77,7 @@ async function getProjectBySlug(slug) {
 }
 
 async function submitContactForm(formData) {
+  if (!db) return { error: { message: 'Database not available' } };
   const { error } = await db
     .from('contact_messages')
     .insert([{ ...formData, brand: SITE_CONFIG.brand }]);
