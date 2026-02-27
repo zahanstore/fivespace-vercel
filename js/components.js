@@ -37,6 +37,18 @@ function initComponents({ activePage = '' } = {}) {
 
   document.body.insertBefore(nav, document.body.firstChild);
 
+  // ── FOOTER — must be declared before applyTheme uses it ──
+  const footer = document.createElement('footer');
+  footer.className = 'site-footer';
+  footer.style.background = 'linear-gradient(90deg, #1A5276 0%, #2A7FBA 100%)';
+  footer.style.borderTop = '3px solid #9A9088';
+  footer.innerHTML = `
+    <span class="footer-brand" style="color:#C8E8F8;">Five Space World</span>
+    <span class="footer-copy" style="color:rgba(200,232,248,0.6);">© ${new Date().getFullYear()} Five Space World. All rights reserved.</span>
+    <a href="https://safa.zahan.one" style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#C4BCB4;">Safa Zahan ↗</a>
+  `;
+  document.body.appendChild(footer);
+
   // ── MOBILE DRAWER ──────────────────────────
   const drawer = document.createElement('div');
   drawer.className = 'nav-drawer';
@@ -100,17 +112,7 @@ function initComponents({ activePage = '' } = {}) {
   applyTheme(saved ? saved === 'dark' : prefersDark);
   themeToggle.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') !== 'dark'));
 
-  // ── FOOTER ─────────────────────────────────
-  const footer = document.createElement('footer');
-  footer.className = 'site-footer';
-  footer.style.background = 'linear-gradient(90deg, #1A5276 0%, #2A7FBA 100%)';
-  footer.style.borderTop = '3px solid #9A9088';
-  footer.innerHTML = `
-    <span class="footer-brand" style="color:#C8E8F8;">Five Space World</span>
-    <span class="footer-copy" style="color:rgba(200,232,248,0.6);">© ${new Date().getFullYear()} Five Space World. All rights reserved.</span>
-    <a href="https://safa.zahan.one" style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#C4BCB4;">Safa Zahan ↗</a>
-  `;
-  document.body.appendChild(footer);
+
 
   // ── SKIP LINK ──────────────────────────────
   const skip = document.createElement('a');
