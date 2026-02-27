@@ -13,7 +13,23 @@
 </head>
 <body>
 
-  <!-- Nav injected by components.js -->
+  <!-- Nav — baked in HTML, enhanced by components.js -->
+  <nav class="nav site-nav" id="nav" role="navigation" aria-label="Main navigation"
+       style="background:linear-gradient(90deg,#1A5276 0%,#2A7FBA 50%,#1A6A90 100%);">
+    <a href="../index.html" class="nav-logo" aria-label="Five Space World — Home"
+       style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#C8E8F8;letter-spacing:0.05em;">
+      FSW
+      <span style="display:block;font-size:0.5rem;letter-spacing:0.25em;text-transform:uppercase;font-family:Inter,sans-serif;color:#80C0E0;margin-top:-0.1rem;">Five Space World</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <a href="projects.html" style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,232,248,0.85);">Projects</a>
+      <a href="index.html#about" style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,232,248,0.85);">About</a>
+      <a href="index.html#contact" style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,232,248,0.85);">Contact</a>
+      <a href="https://safa.zahan.one" style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#C4BCB4;">Safa Zahan ↗</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"
+              style="width:2rem;height:2rem;border:1px solid rgba(255,255,255,0.25);border-radius:50%;background:transparent;color:#C8E8F8;cursor:pointer;font-size:0.8rem;display:flex;align-items:center;justify-content:center;">☾</button>
+    </div>
+  </nav>
 
   <div class="page-header" id="main-content" tabindex="-1" style="outline:none;" aria-label="Projects archive">
     <p class="section-label">Our Work</p>
