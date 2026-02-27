@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sitemap Generator — Safa Zahan Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    body { padding-top: 0; background: var(--cream-dk); }
+    .wrap { max-width: 680px; margin: 0 auto; padding: var(--space-lg) var(--space-md); }
+    pre {
+      background: var(--earth-dk);
+      color: var(--sandstone-lt);
+      padding: var(--space-md);
+      font-size: 0.75rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .status { font-size: 0.8rem; color: var(--copper); margin: var(--space-sm) 0; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p style="margin-bottom:0.5rem;">
+      <a href="index.html" style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--copper);">← Admin</a>
+    </p>
+    <p class="section-label">Admin Tool</p>
+    <h1 style="font-family:var(--font-display); font-size:2.5rem; font-weight:300; margin-bottom:var(--space-sm);">Sitemap Generator</h1>
+    <p style="margin-bottom:var(--space-md); line-height:1.8;">
+      This tool queries your live Supabase database for all published projects and generates a
+      <code style="font-size:0.85em; background:var(--cream-dk); padding:0.1em 0.4em;">sitemap.xml</code>
+      file. Run it after adding or removing projects, then upload the file to the root of your repository.
+    </p>
+
+    <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:var(--space-md);">
+      <button class="btn-primary" id="generateBtn">Generate Sitemap</button>
+      <button class="btn-outline" id="downloadBtn" style="display:none;">Download sitemap.xml</button>
+      <a href="../sitemap.xml" class="btn-outline" target="_blank" rel="noopener noreferrer"
+         style="display:inline-block;">View Current →</a>
+    </div>
+
+    <p class="status" id="status"></p>
+    <pre id="output" style="display:none;"></pre>
+
+    <div style="margin-top:var(--space-lg); padding-top:var(--space-md); border-top:1px solid var(--sandstone-lt);">
+      <p class="section-label">After Generating</p>
+      <p style="line-height:1.8;">Download the file above and commit it to the root of your
+        <code style="font-size:0.85em; background:var(--cream-dk); padding:0.1em 0.4em;">safa-zahan/</code>
+        repository as <code style="font-size:0.85em; background:var(--cream-dk); padding:0.1em 0.4em;">sitemap.xml</code>.
+        Vercel will serve it automatically. You do not need to submit it manually to search engines —
+        Google will discover it via your <code style="font-size:0.85em; background:var(--cream-dk); padding:0.1em 0.4em;">robots.txt</code>.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/config.js"></script>
+  <script>
+    const SITE_DOMAIN = 'https://safa.zahan.one'; // Update if your domain changes
+
+    const staticPages = [
+      { loc: '/',             priority: '1.0', changefreq: 'monthly' },
+      { loc: '/projects',     priority: '0.9', changefreq: 'weekly'  },
+    ];
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const statusEl   = document.getElementById('status');
+      const outputEl   = document.getElementById('output');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      statusEl.textContent  = 'Fetching published projects…';
+      statusEl.style.color  = 'var(--copper)';
+      downloadBtn.style.display = 'none';
+
+      try {
+        const projects = await getPublishedSlugs();
+        const today    = new Date().toISOString().split('T')[0];
+
+        const projectEntries = projects.map(p => ({
+          loc:        `/project?slug=${p.slug}`,
+          lastmod:    p.updated_at ? p.updated_at.split('T')[0] : today,
+          priority:   '0.8',
+          changefreq: 'monthly',
+        }));
+
+        const allEntries = [
+          ...staticPages.map(p => ({ ...p, lastmod: today })),
+          ...projectEntries,
+        ];
+
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allEntries.map(e => `  <url>
+    <loc>${SITE_DOMAIN}${e.loc}</loc>
+    <lastmod>${e.lastmod}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+        outputEl.textContent      = xml;
+        outputEl.style.display    = 'block';
+        statusEl.textContent      = `✓ Generated — ${allEntries.length} URLs (${projectEntries.length} projects + ${staticPages.length} static pages)`;
+        statusEl.style.color      = 'var(--patina)';
+        downloadBtn.style.display = 'inline-block';
+
+        // Wire download button
+        downloadBtn.onclick = () => {
+          const blob = new Blob([xml], { type: 'application/xml' });
+          const a    = document.createElement('a');
+          a.href     = URL.createObjectURL(blob);
+          a.download = 'sitemap.xml';
+          a.click();
+          URL.revokeObjectURL(a.href);
+        };
+
+      } catch (err) {
+        statusEl.textContent = `Error: ${err.message}`;
+        statusEl.style.color = '#c0392b';
+      }
+    });
+  </script>
+</body>
+</html>
