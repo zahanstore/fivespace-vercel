@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from:     `${brandName} <noreply@${isFive ? 'fivespace.zahan.one' : 'safa.zahan.one'}>`,
+        from:     `${brandName} <noreply@zahan.one>`,  // zahan.one is the verified Resend domain
         to:       [toEmail],
         reply_to: email,
         subject:  `New enquiry — ${first_name} ${last_name}${project_type ? ' · ' + project_type : ''}`,
