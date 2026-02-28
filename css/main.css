@@ -119,11 +119,11 @@ p { font-weight: 400; line-height: 1.8; }
 .section-label {
   font-family:    var(--font-body);
   font-size:      0.65rem;
+  font-weight:    600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color:          var(--copper-lt);
+  color:          var(--concrete);
   margin-bottom:  var(--space-sm);
-  opacity:        0.85;
 }
 
 /* ── LAYOUT ──────────────────────────────────── */
@@ -164,20 +164,30 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 }
 
 .nav-logo {
-  font-family:    var(--font-display);
-  font-size:      1.7rem;
-  font-weight:    500;
-  color:          var(--sky-mist);
-  letter-spacing: 0.05em;
+  display:         flex;
+  flex-direction:  column;
+  line-height:     1.15;
+  text-decoration: none;
+  gap:             0;
 }
 
-.nav-logo span {
-  font-size:      0.6rem;
-  letter-spacing: 0.25em;
+.nav-logo-fsw {
+  font-family:    var(--font-display);
+  font-size:      1.75rem;
+  font-weight:    500;
+  color:          #FFFFFF;
+  letter-spacing: 0.06em;
+  line-height:    1;
+}
+
+.nav-logo-sub {
+  font-family:    var(--font-body);
+  font-size:      0.55rem;
+  font-weight:    500;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color:          var(--sky-lt);
-  display:        block;
-  margin-top:     -0.2rem;
+  color:          rgba(200, 232, 248, 0.78);
+  margin-top:     0.1rem;
 }
 
 .nav-links {
@@ -561,11 +571,16 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 
 [data-theme="dark"] .stat-item { background: var(--cream-dk); }
 
+[data-theme="dark"] .section-label {
+  color: var(--sky-lt);
+  opacity: 1;
+}
+
 .stat-number {
   font-family: var(--font-display);
   font-size:   clamp(2rem, 5vw, 3.5rem);
   font-weight: 300;
-  color:       var(--sky-mist);
+  color:       #FFFFFF;
   line-height: 1;
 }
 
@@ -573,7 +588,7 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
   font-size:      0.6rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color:          var(--sage);
+  color:          rgba(255, 255, 255, 0.68);
   margin-top:     0.4rem;
 }
 
@@ -605,10 +620,20 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 
 .contact-detail-item .label {
   font-size: 0.65rem; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--moss-lt);
+  text-transform: uppercase; color: var(--sky-lt);
+  font-weight: 600;
 }
 
-.contact-detail-item .value { font-family: var(--font-display); font-size: 1.1rem; }
+.contact-detail-item .value {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--earth);
+}
+
+[data-theme="dark"] .contact-detail-item .value {
+  color: var(--earth);
+}
 
 /* ── FOOTER ──────────────────────────────────── */
 .site-footer {
@@ -763,3 +788,18 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 }
 
 .animate-in { animation: fadeInUp 0.7s ease both; }
+
+
+/* ── Dark mode heading overrides — inline sky-dk becomes unreadable on dark bg ── */
+[data-theme="dark"] h2,
+[data-theme="dark"] h3 {
+  color: var(--earth-dk) !important;
+}
+
+[data-theme="dark"] .philosophy-item h4 {
+  color: var(--sky-lt) !important;
+}
+
+[data-theme="dark"] p {
+  color: var(--earth);
+}
