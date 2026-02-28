@@ -13,7 +13,7 @@ const SITE_CONFIG = {
   brandName: 'Five Space World',
   tagline:   'Architecture at the scale of civilisation',
   email:     'studio@fivespace.zahan.one',
-  location:  'Dhaka, Bangladesh',
+  location:  'Mumbai, India',
   year:      new Date().getFullYear().toString(),
 
   child: {
