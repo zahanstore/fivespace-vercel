@@ -196,7 +196,7 @@
         <div class="contact-detail">
           <div class="contact-detail-item">
             <span class="label">Email</span>
-            <span class="value">hello@fivespace.zahan.one</span>
+            <span class="value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="365e535a5a5976505f40534546575553184c575e575818595853">[email&#160;protected]</a></span>
           </div>
           <div class="contact-detail-item">
             <span class="label">Location</span>
@@ -268,7 +268,7 @@
 
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     window.addEventListener('load', () => document.body.classList.add('loaded'));
     if (document.readyState === 'complete') document.body.classList.add('loaded');
   </script>
@@ -347,11 +347,19 @@
 
           await submitContactForm(formData);
 
-          fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...formData, brand: SITE_CONFIG.brand }),
-          }).catch(err => console.warn('Email notification failed:', err));
+          try {
+            const emailRes = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...formData, brand: SITE_CONFIG.brand }),
+            });
+            if (!emailRes.ok) {
+              const errData = await emailRes.json();
+              console.warn('Email API error:', errData);
+            }
+          } catch (emailErr) {
+            console.warn('Email notification failed:', emailErr);
+          }
 
           e.target.style.display = 'none';
           document.getElementById('formSuccess').style.display = 'block';
@@ -387,15 +395,4 @@
             </div>
             <div class="project-card-body">
               <h3 class="project-card-title">${p.title}</h3>
-              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' · ')}</p>
-            </div>
-          </a>`).join('');
-      } catch (err) {
-        console.warn('Could not load featured projects:', err);
-      }
-    }
-
-    loadFeaturedProjects();
-  </script>
-</body>
-</html>
+              <p class="project-card-meta">${[p.location, p.year, p.category].f
