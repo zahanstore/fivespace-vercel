@@ -28,9 +28,9 @@ export default async function handler(req, res) {
   const isFive    = brand === 'fivespace';
   const toEmail   = isFive ? 'studio@fivespace.zahan.one' : 'studio@safa.zahan.one';
   const brandName = isFive ? 'Five Space World' : 'Safa Zahan';
-  const accent    = isFive ? '#4A6741' : '#B87333';
-  const bg        = isFive ? '#F2F5F0' : '#F5EFE6';
-  const header    = isFive ? '#3A4A38' : '#5A4A42';
+  const accent    = isFive ? '#2A7FBA' : '#B87333';
+  const bg        = isFive ? '#EAF3FA' : '#F5EFE6';
+  const header    = isFive ? '#1A5276' : '#5A4A42';
 
   try {
     const response = await fetch('https://api.resend.com/emails', {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from:     `${brandName} <noreply@safa.zahan.one>`,
+        from:     `${brandName} <noreply@${isFive ? 'fivespace.zahan.one' : 'safa.zahan.one'}>`,
         to:       [toEmail],
         reply_to: email,
         subject:  `New enquiry — ${first_name} ${last_name}${project_type ? ' · ' + project_type : ''}`,
