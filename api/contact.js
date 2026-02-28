@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   }
 
   const isFive    = brand === 'fivespace';
-  const toEmail   = isFive ? 'studio@fivespace.zahan.one' : 'studio@safa.zahan.one';
+  const toEmail   = 'fsw@mail.zahan.one';
   const brandName = isFive ? 'Five Space World' : 'Safa Zahan';
   const accent    = isFive ? '#2A7FBA' : '#B87333';
   const bg        = isFive ? '#EAF3FA' : '#F5EFE6';
