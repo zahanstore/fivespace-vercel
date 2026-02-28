@@ -569,22 +569,28 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 
 /* ── STATS BAR ───────────────────────────────── */
 .stats-bar {
-  background:      var(--grad-stats);
+  background:      linear-gradient(90deg, #2A7FBA 0%, #1A5276 100%);
   display:         grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap:             1px;
-  background:      var(--stone-lt);
-  border:          1px solid var(--stone-lt);
   margin:          var(--space-lg) 0;
+  border-radius:   2px;
+  overflow:        hidden;
 }
 
 .stat-item {
-  background:  var(--cream);
+  background:  transparent;
   padding:     var(--space-md) var(--space-sm);
   text-align:  center;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="dark"] .stat-item { background: var(--cream-dk); }
+.stat-item:last-child { border-right: none; }
+
+[data-theme="dark"] .stats-bar {
+  background: linear-gradient(90deg, #0C2E42 0%, #164860 100%);
+}
+
+[data-theme="dark"] .stat-item { background: transparent; }
 
 [data-theme="dark"] .section-label {
   color: var(--sky-lt);
