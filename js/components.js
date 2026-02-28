@@ -16,8 +16,11 @@ function initComponents({ activePage = '' } = {}) {
 
   nav.innerHTML = `
     <a href="/" class="nav-logo" aria-label="Five Space World — Home">
-      <span class="nav-logo-fsw">FSW</span>
-      <span class="nav-logo-sub">Five Space World</span>
+      <img src="/assets/logo.png" alt="Five Space World" class="nav-logo-img" />
+      <span class="nav-logo-text">
+        <span class="nav-logo-fsw">FSW</span>
+        <span class="nav-logo-sub">Five Space World</span>
+      </span>
     </a>
 
     <ul class="nav-links" role="list">
