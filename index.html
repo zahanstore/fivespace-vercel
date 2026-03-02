@@ -30,6 +30,106 @@
       margin-top: var(--space-lg);
     }
 
+    /* ── Five Spaces ── */
+    .five-spaces-intro {
+      max-width: 640px;
+      margin-bottom: var(--space-xl);
+    }
+
+    .five-spaces-intro p {
+      margin-top: var(--space-sm);
+      color: var(--slate);
+      line-height: 1.9;
+      font-size: 1rem;
+    }
+
+    .five-spaces-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--stone-lt);
+    }
+
+    @media (max-width: 900px) {
+      .five-spaces-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .five-spaces-grid { grid-template-columns: 1fr; }
+    }
+
+    .five-space-card {
+      padding: var(--space-md) var(--space-sm);
+      border-right: 1px solid var(--stone-lt);
+      border-bottom: 1px solid var(--stone-lt);
+      position: relative;
+      transition: background 0.3s ease;
+      cursor: default;
+    }
+
+    .five-space-card:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 900px) {
+      .five-space-card:nth-child(2n) { border-right: none; }
+    }
+
+    .five-space-card:hover {
+      background: var(--sky-dk, #1A5276);
+    }
+
+    .five-space-card:hover .five-space-number,
+    .five-space-card:hover .five-space-name,
+    .five-space-card:hover .five-space-types {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .five-space-card:hover .five-space-name {
+      color: #ffffff;
+    }
+
+    .five-space-number {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--stone-lt, #d0cec9);
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+      transition: color 0.3s ease;
+    }
+
+    .five-space-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--sky-dk);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .five-space-dash {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--sky);
+      margin-bottom: 0.75rem;
+      transition: background 0.3s ease;
+    }
+
+    .five-space-card:hover .five-space-dash {
+      background: rgba(255,255,255,0.5);
+    }
+
+    .five-space-types {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate);
+      line-height: 1.9;
+      transition: color 0.3s ease;
+    }
+
     /* ── Philosophy ── */
     .philosophy-grid {
       display: grid;
@@ -80,7 +180,7 @@
       <span class="hero-line">of civilisation</span>
     </h1>
 
-    <p class="hero-subtitle">Cultural · Civic · Institutional · Public</p>
+    <p class="hero-subtitle">Knowledge · Community · Learning · Work · Commerce</p>
 
     <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
   </section>
@@ -123,6 +223,91 @@
           <div class="stat-number">8</div>
           <div class="stat-label">Awards</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FIVE SPACES ────────────────────────────── -->
+  <section class="scroll-target" id="five-spaces" aria-label="The five spaces we design">
+    <div class="wrap">
+      <p class="section-label">What We Design</p>
+
+      <div class="five-spaces-intro">
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; color:var(--sky-dk);">
+          Five spaces that make<br><em>cities whole</em>
+        </h2>
+        <p>
+          The name is intentional. Every city is held together by five kinds of space — where knowledge is kept, where communities gather, where people learn, where work happens, and where commerce moves. We design all five.
+        </p>
+      </div>
+
+      <div class="five-spaces-grid">
+
+        <!-- 01 Knowledge -->
+        <div class="five-space-card">
+          <div class="five-space-number">01</div>
+          <div class="five-space-name">Knowledge<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Museums<br>
+            Libraries<br>
+            Cultural Centres<br>
+            Archives
+          </div>
+        </div>
+
+        <!-- 02 Community -->
+        <div class="five-space-card">
+          <div class="five-space-number">02</div>
+          <div class="five-space-name">Community<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Civic Halls<br>
+            Public Buildings<br>
+            Places of Worship<br>
+            Community Centres
+          </div>
+        </div>
+
+        <!-- 03 Learning -->
+        <div class="five-space-card">
+          <div class="five-space-number">03</div>
+          <div class="five-space-name">Learning<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Schools<br>
+            Universities<br>
+            Campuses<br>
+            Research Institutes
+          </div>
+        </div>
+
+        <!-- 04 Work -->
+        <div class="five-space-card">
+          <div class="five-space-number">04</div>
+          <div class="five-space-name">Work<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Corporate Offices<br>
+            Workspace Interiors<br>
+            Commercial Fit-outs<br>
+            Studio Buildings
+          </div>
+        </div>
+
+        <!-- 05 Commerce -->
+        <div class="five-space-card" style="border-right:none;">
+          <div class="five-space-number">05</div>
+          <div class="five-space-name">Commerce<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Retail Architecture<br>
+            Mixed-Use Buildings<br>
+            Commercial Centres<br>
+            Market Halls
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -173,12 +358,12 @@
           Five Space World was founded on the belief that architecture is the most public of arts. Unlike a painting or a poem, a building cannot be avoided — it occupies the shared world, shaping the experience of everyone who passes through or near it.
         </p>
         <p style="margin-top:var(--space-sm); line-height:1.9; color:var(--slate);">
-          Our work spans cultural institutions, civic buildings, educational campuses, and public infrastructure. We approach each project as a long-term investment in the places and communities we serve.
+          Our work spans all five spaces of civic life — cultural institutions, community buildings, educational campuses, corporate workplaces, and commercial architecture. We approach each project as a long-term investment in the places and communities we serve.
         </p>
         <p style="margin-top:var(--space-md); font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--sky-lt);">
           Sister practice:
           <a href="https://safa.zahan.one" style="color:var(--sky); text-decoration:underline; text-underline-offset:3px;">Safa Zahan</a>
-          — boutique interiors &amp; residences
+          — hospitality, luxury residences &amp; bespoke interiors
         </p>
       </div>
     </div>
@@ -191,7 +376,7 @@
         <p class="section-label">Get in Touch</p>
         <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--sky-dk);">Start a conversation</h2>
         <p style="margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
-          We work on a select number of projects at a time. If you are planning a civic, cultural, or institutional building, we would like to hear from you.
+          We work on a select number of projects at a time. If you are planning a civic, cultural, institutional, commercial, or workspace project, we would like to hear from you.
         </p>
         <div class="contact-detail">
           <div class="contact-detail-item">
@@ -211,7 +396,7 @@
         </div>
 
         <form id="contactForm" novalidate aria-label="Project enquiry form">
-          <!-- Honeypot -->
+          <!-- Honeypot — hidden from real users -->
           <div style="position:absolute; left:-9999px;" aria-hidden="true">
             <input type="text" name="website" tabindex="-1" autocomplete="off" />
           </div>
@@ -237,14 +422,34 @@
               <label for="project_type">Project Type</label>
               <select id="project_type" name="project_type">
                 <option value="">Select…</option>
-                <option>Cultural Centre</option>
-                <option>Civic Building</option>
-                <option>Educational Campus</option>
-                <option>Library</option>
-                <option>Museum</option>
-                <option>Public Infrastructure</option>
-                <option>Mixed Use</option>
-                <option>Other</option>
+                <optgroup label="Knowledge Spaces">
+                  <option>Museum</option>
+                  <option>Library</option>
+                  <option>Cultural Centre</option>
+                  <option>Archive</option>
+                </optgroup>
+                <optgroup label="Community Spaces">
+                  <option>Civic Building</option>
+                  <option>Community Centre</option>
+                  <option>Place of Worship</option>
+                  <option>Public Infrastructure</option>
+                </optgroup>
+                <optgroup label="Learning Spaces">
+                  <option>School</option>
+                  <option>University / Campus</option>
+                  <option>Research Institute</option>
+                </optgroup>
+                <optgroup label="Work Spaces">
+                  <option>Corporate Office</option>
+                  <option>Workspace Fit-out</option>
+                  <option>Studio Building</option>
+                </optgroup>
+                <optgroup label="Commerce Spaces">
+                  <option>Retail Architecture</option>
+                  <option>Mixed-Use Building</option>
+                  <option>Commercial Centre</option>
+                </optgroup>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div class="form-group">
@@ -268,7 +473,8 @@
 
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
     window.addEventListener('load', () => document.body.classList.add('loaded'));
     if (document.readyState === 'complete') document.body.classList.add('loaded');
   </script>
