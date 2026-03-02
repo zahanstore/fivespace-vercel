@@ -11,6 +11,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── Dark mode readability ── */
+    [data-theme="dark"] .page-header h1 { color: #C8DFF0 !important; }
+    [data-theme="dark"] .section-label { color: #6FA8C8; }
+    [data-theme="dark"] body { background-color: #0D1B26; }
+    [data-theme="dark"] .filter-btn {
+      color: #A0C4D8;
+      border-color: rgba(160,196,216,0.3);
+      background: transparent;
+    }
+    [data-theme="dark"] .filter-btn:hover,
+    [data-theme="dark"] .filter-btn.active {
+      background: #1A5276;
+      color: #ffffff;
+      border-color: #1A5276;
+    }
+    [data-theme="dark"] .project-card-title { color: #C8DFF0; }
+    [data-theme="dark"] .project-card-meta  { color: #6FA8C8; }
+    [data-theme="dark"] .all-projects-grid  { background: transparent; }
+    p { font-weight: 500; }
+  </style>
 </head>
 <body>
 
@@ -18,10 +39,10 @@
 
   <div class="page-header" id="main-content" tabindex="-1" style="outline:none;" aria-label="Projects archive">
     <p class="section-label">Our Work</p>
-    <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:300; color:var(--sky-dk);">All Projects</h1>
+    <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:400; color:var(--sky-dk);">All Projects</h1>
   </div>
 
-  <div class="filter-bar" id="filterBar">
+  <div class="filter-bar" id="filterBar" data-static-filters="true">
     <button class="filter-btn active" data-cat="all">All</button>
     <button class="filter-btn" data-cat="Knowledge">Knowledge</button>
     <button class="filter-btn" data-cat="Community">Community</button>
@@ -53,5 +74,25 @@
     });
   </script>
   <script src="js/projects.js"></script>
+  <script>
+    // Remove any duplicate filter buttons added dynamically by projects.js.
+    // The five categories are already hardcoded above — this runs after
+    // projects.js to deduplicate by data-cat value, keeping the first match.
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const bar = document.getElementById('filterBar');
+        if (!bar) return;
+        const seen = {};
+        Array.from(bar.querySelectorAll('.filter-btn')).forEach(btn => {
+          const cat = btn.dataset.cat;
+          if (seen[cat]) {
+            btn.remove();
+          } else {
+            seen[cat] = true;
+          }
+        });
+      }, 500);
+    });
+  </script>
 </body>
 </html>
