@@ -154,7 +154,7 @@
       margin-bottom: var(--space-xs);
     }
 
-    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); }
+    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); font-weight: 500; }
 
     /* ── Contact ── */
     .contact-section {
@@ -407,7 +407,7 @@
         <div class="contact-detail">
           <div class="contact-detail-item">
             <span class="label">Email</span>
-            <span class="value"><a href="mailto:hello@fivespace.zahan.one" style="color:inherit;">hello@fivespace.zahan.one</a></span>
+            <span class="value"><a href="mailto:fsw@mail.zahan.one" style="color:inherit;">fsw@mail.zahan.one</a></span>
           </div>
           <div class="contact-detail-item">
             <span class="label">Location</span>
@@ -673,15 +673,4 @@
             </div>
             <div class="project-card-body">
               <h3 class="project-card-title">${p.title}</h3>
-              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' · ')}</p>
-            </div>
-          </a>`).join('');
-      } catch (err) {
-        console.warn('Could not load featured projects:', err);
-      }
-    }
-
-    loadFeaturedProjects();
-  </script>
-</body>
-</html>
+              <p class="project-card-meta">${[p.location, p.
