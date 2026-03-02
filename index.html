@@ -30,6 +30,16 @@
       margin-top: var(--space-lg);
     }
 
+    /* ── Hero subtitle links ── */
+    .hero-subtitle-links a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 1px;
+      transition: opacity 0.2s ease;
+    }
+    .hero-subtitle-links a:hover { opacity: 0.6; }
+
     /* ── Five Spaces ── */
     .five-spaces-intro {
       max-width: 640px;
@@ -59,76 +69,66 @@
 
     .five-space-card {
       padding: var(--space-md) var(--space-sm);
-      border-right: 1px solid var(--stone-lt);
-      border-bottom: 1px solid var(--stone-lt);
+      border-right: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       position: relative;
       transition: background 0.3s ease;
       cursor: default;
     }
-
-    .five-space-card:last-child {
-      border-right: none;
+    [data-theme="light"] .five-space-card {
+      border-right-color: #D0D8E0;
+      border-bottom-color: #D0D8E0;
     }
-
+    .five-space-card:last-child { border-right: none; }
     @media (max-width: 900px) {
       .five-space-card:nth-child(2n) { border-right: none; }
     }
-
-    .five-space-card:hover {
-      background: var(--sky-dk, #1A5276);
-    }
-
-    .five-space-card:hover .five-space-number,
-    .five-space-card:hover .five-space-name,
-    .five-space-card:hover .five-space-types {
-      color: rgba(255,255,255,0.9);
-    }
-
-    .five-space-card:hover .five-space-name {
-      color: #ffffff;
-    }
+    .five-space-card:hover { background: #1A5276; }
+    .five-space-card:hover .five-space-number { color: rgba(255,255,255,0.2); }
+    .five-space-card:hover .five-space-name   { color: #ffffff; }
+    .five-space-card:hover .five-space-types  { color: rgba(255,255,255,0.7); }
+    .five-space-card:hover .five-space-dash   { background: rgba(255,255,255,0.35); }
 
     .five-space-number {
       font-family: var(--font-display);
       font-size: 2.8rem;
       font-weight: 300;
-      color: var(--stone-lt, #d0cec9);
+      color: #4A7FA0;
       line-height: 1;
       margin-bottom: var(--space-sm);
       transition: color 0.3s ease;
     }
+    [data-theme="light"] .five-space-number { color: #BDD4E7; }
 
     .five-space-name {
       font-family: var(--font-display);
       font-size: 1.35rem;
       font-weight: 400;
-      color: var(--sky-dk);
+      color: #E8F4FC;
       line-height: 1.2;
       margin-bottom: 0.5rem;
       transition: color 0.3s ease;
     }
+    [data-theme="light"] .five-space-name { color: #1A4F6E; }
 
     .five-space-dash {
       display: block;
       width: 24px;
       height: 1px;
-      background: var(--sky);
+      background: #2A7FBA;
       margin-bottom: 0.75rem;
       transition: background 0.3s ease;
-    }
-
-    .five-space-card:hover .five-space-dash {
-      background: rgba(255,255,255,0.5);
     }
 
     .five-space-types {
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--slate);
+      color: #6FA8C8;
       line-height: 1.9;
       transition: color 0.3s ease;
     }
+    [data-theme="light"] .five-space-types { color: #4A7A99; }
 
     /* ── Philosophy ── */
     .philosophy-grid {
@@ -180,7 +180,17 @@
       <span class="hero-line">of civilisation</span>
     </h1>
 
-    <p class="hero-subtitle">Knowledge · Community · Learning · Work · Commerce</p>
+    <p class="hero-subtitle hero-subtitle-links">
+      <a href="#five-spaces">Knowledge</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Community</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Learning</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Work</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Commerce</a>
+    </p>
 
     <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
   </section>
