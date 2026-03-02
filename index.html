@@ -165,11 +165,16 @@
 
     /* ── Hero subtitle links ── */
     .hero-subtitle-links a {
-      color: inherit; text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 1px; transition: opacity 0.2s ease;
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.5);
+      text-underline-offset: 4px;
+      transition: text-decoration-color 0.2s ease, opacity 0.2s ease;
     }
-    .hero-subtitle-links a:hover { opacity: 0.6; }
+    .hero-subtitle-links a:hover {
+      text-decoration-color: rgba(255,255,255,1);
+      opacity: 0.8;
+    }
 
     /* ── Body weight ── */
     p { font-weight: 500; }
@@ -219,7 +224,17 @@
       <span class="hero-line">of civilisation</span>
     </h1>
 
-    <p class="hero-subtitle">Knowledge · Community · Learning · Work · Commerce</p>
+    <p class="hero-subtitle hero-subtitle-links">
+      <a href="#five-spaces">Knowledge</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Community</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Learning</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Work</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Commerce</a>
+    </p>
 
     <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
   </section>
@@ -422,7 +437,7 @@
         <div class="contact-detail">
           <div class="contact-detail-item">
             <span class="label">Email</span>
-            <span class="value"><a href="mailto:fsw@mail.zahan.one" style="color:inherit;">fsw@mail.zahan.one</a></span>
+            <span class="value"><a href="/cdn-cgi/l/email-protection#37514440775a565e5b194d565f565919585952" style="color:inherit;"><span class="__cf_email__" data-cfemail="b7d1c4c0f7dad6dedb99cdd6dfd6d999d8d9d2">[email&#160;protected]</span></a></span>
           </div>
           <div class="contact-detail-item">
             <span class="label">Location</span>
@@ -514,7 +529,7 @@
 
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
     window.addEventListener('load', () => document.body.classList.add('loaded'));
     if (document.readyState === 'complete') document.body.classList.add('loaded');
