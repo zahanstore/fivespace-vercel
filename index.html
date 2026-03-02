@@ -437,7 +437,7 @@
         <div class="contact-detail">
           <div class="contact-detail-item">
             <span class="label">Email</span>
-            <span class="value"><a href="/cdn-cgi/l/email-protection#aec8ddd9eec3cfc7c280d4cfc6cfc080c1c0cb" style="color:inherit;"><span class="__cf_email__" data-cfemail="4a2c393d0a272b232664302b222b246425242f">[email&#160;protected]</span></a></span>
+            <span class="value" id="contact-email"></span>
           </div>
           <div class="contact-detail-item">
             <span class="label">Location</span>
@@ -530,7 +530,7 @@
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
   
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     window.addEventListener('load', () => document.body.classList.add('loaded'));
     if (document.readyState === 'complete') document.body.classList.add('loaded');
   </script>
@@ -691,6 +691,22 @@
     }
 
     loadFeaturedProjects();
+  </script>
+
+  <script>
+    // Email injected via JS to prevent Cloudflare encoding
+    (function() {
+      var u = 'fsw';
+      var d = 'mail.zahan.one';
+      var el = document.getElementById('contact-email');
+      if (el) {
+        var a = document.createElement('a');
+        a.href = 'mailto:' + u + '@' + d;
+        a.textContent = u + '@' + d;
+        a.style.color = 'inherit';
+        el.appendChild(a);
+      }
+    })();
   </script>
 </body>
 </html>
