@@ -1,9 +1,9 @@
 # Five Space World
 
-Architecture at civilisational scale — civic, cultural, institutional.
+Architecture at civilisational scale — knowledge, community, learning, work & commerce spaces.
 
 **Live site:** https://fivespace.zahan.one  
-**Sister brand:** [Safa Zahan](https://safa.zahan.one) — boutique interiors & residences  
+**Sister brand:** [Safa Zahan](https://safa.zahan.one) — hospitality, luxury residences & bespoke interiors  
 **Shared database:** Same Supabase project as Safa Zahan (`brand = 'fivespace'` filters all queries)
 
 ---
