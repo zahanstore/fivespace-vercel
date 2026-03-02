@@ -151,7 +151,7 @@
       margin-bottom: var(--space-xs);
     }
 
-    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); }
+    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); font-weight: 500; }
 
     /* ── Contact ── */
     .contact-section {
@@ -165,39 +165,23 @@
 
     /* ── Hero subtitle links ── */
     .hero-subtitle-links a {
-      color: inherit;
-      text-decoration: none;
+      color: inherit; text-decoration: none;
       border-bottom: 1px solid currentColor;
-      padding-bottom: 1px;
-      transition: opacity 0.2s ease;
+      padding-bottom: 1px; transition: opacity 0.2s ease;
     }
     .hero-subtitle-links a:hover { opacity: 0.6; }
 
-    /* ── Body paragraph weight ── */
+    /* ── Body weight ── */
     p { font-weight: 500; }
 
-    /* ── Five Spaces section ── */
+    /* ── Five Spaces ── */
     .five-spaces-intro { max-width: 640px; margin-bottom: var(--space-xl); }
     .five-spaces-intro p { margin-top: var(--space-sm); color: var(--slate); line-height: 1.9; font-size: 1rem; font-weight: 500; }
-
-    .five-spaces-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
+    .five-spaces-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
     [data-theme="light"] .five-spaces-grid { border-top-color: #D0D8E0; }
     @media (max-width: 900px) { .five-spaces-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 500px) { .five-spaces-grid { grid-template-columns: 1fr; } }
-
-    .five-space-card {
-      padding: var(--space-md) var(--space-sm);
-      border-right: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      position: relative;
-      transition: background 0.3s ease;
-      cursor: default;
-    }
+    .five-space-card { padding: var(--space-md) var(--space-sm); border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; transition: background 0.3s ease; cursor: default; }
     [data-theme="light"] .five-space-card { border-right-color: #D0D8E0; border-bottom-color: #D0D8E0; }
     .five-space-card:last-child { border-right: none; }
     @media (max-width: 900px) { .five-space-card:nth-child(2n) { border-right: none; } }
@@ -206,47 +190,17 @@
     .five-space-card:hover .five-space-name   { color: #ffffff; }
     .five-space-card:hover .five-space-types  { color: rgba(255,255,255,0.7); }
     .five-space-card:hover .five-space-dash   { background: rgba(255,255,255,0.35); }
-
-    .five-space-number {
-      font-family: var(--font-display);
-      font-size: 2.8rem; font-weight: 300;
-      color: #4A7FA0; line-height: 1;
-      margin-bottom: var(--space-sm);
-      transition: color 0.3s ease;
-    }
+    .five-space-number { font-family: var(--font-display); font-size: 2.8rem; font-weight: 300; color: #4A7FA0; line-height: 1; margin-bottom: var(--space-sm); transition: color 0.3s ease; }
     [data-theme="light"] .five-space-number { color: #BDD4E7; }
-
-    .five-space-name {
-      font-family: var(--font-display);
-      font-size: 1.35rem; font-weight: 400;
-      color: #E8F4FC; line-height: 1.2;
-      margin-bottom: 0.5rem;
-      transition: color 0.3s ease;
-    }
+    .five-space-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 500; color: #E8F4FC; line-height: 1.2; margin-bottom: 0.5rem; transition: color 0.3s ease; }
     [data-theme="light"] .five-space-name { color: #1A4F6E; }
-
-    .five-space-dash {
-      display: block; width: 24px; height: 1px;
-      background: #2A7FBA; margin-bottom: 0.75rem;
-      transition: background 0.3s ease;
-    }
-    .five-space-types {
-      font-size: 0.72rem; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #6FA8C8;
-      line-height: 1.9; transition: color 0.3s ease;
-    }
+    .five-space-dash { display: block; width: 24px; height: 1px; background: #2A7FBA; margin-bottom: 0.75rem; transition: background 0.3s ease; }
+    .five-space-types { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #6FA8C8; line-height: 1.9; transition: color 0.3s ease; }
     [data-theme="light"] .five-space-types { color: #4A7A99; }
 
-    /* ── Stats counter pulse ── */
-    @keyframes statPulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.04); }
-      100% { transform: scale(1); }
-    }
+    /* ── Stats pulse ── */
+    @keyframes statPulse { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
     .stat-number.counted { animation: statPulse 0.4s ease forwards; }
-
-    /* ── Philosophy paragraph weight ── */
-    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); font-weight: 500; }
   </style>
 </head>
 <body>
@@ -274,7 +228,7 @@
   <section class="scroll-target" id="work" aria-label="Featured projects">
     <div class="wrap">
       <p class="section-label">Selected Work</p>
-      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; color:var(--sky-dk);">Projects</h2>
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; color:var(--sky-dk);">Projects</h2>
 
       <div class="featured-grid" id="featuredProjects">
         <div class="project-skeleton"></div>
@@ -318,7 +272,7 @@
       <p class="section-label">What We Design</p>
 
       <div class="five-spaces-intro">
-        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; color:var(--sky-dk);">
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; color:var(--sky-dk);">
           Five spaces that make<br><em>cities whole</em>
         </h2>
         <p>
@@ -399,55 +353,11 @@
 
 
   <!-- ── FIVE SPACES ────────────────────────────── -->
-  <section class="scroll-target" id="five-spaces" aria-label="The five spaces we design">
-    <div class="wrap">
-      <p class="section-label">What We Design</p>
-      <div class="five-spaces-intro">
-        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; color:var(--sky-dk);">
-          Five spaces that make<br><em>cities whole</em>
-        </h2>
-        <p>The name is intentional. Every city is held together by five kinds of space — where knowledge is kept, where communities gather, where people learn, where work happens, and where commerce moves. We design all five.</p>
-      </div>
-      <div class="five-spaces-grid">
-        <div class="five-space-card">
-          <div class="five-space-number">01</div>
-          <div class="five-space-name">Knowledge<br>Spaces</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">Museums<br>Libraries<br>Cultural Centres<br>Archives</div>
-        </div>
-        <div class="five-space-card">
-          <div class="five-space-number">02</div>
-          <div class="five-space-name">Community<br>Spaces</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">Civic Halls<br>Public Buildings<br>Places of Worship<br>Community Centres</div>
-        </div>
-        <div class="five-space-card">
-          <div class="five-space-number">03</div>
-          <div class="five-space-name">Learning<br>Spaces</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">Schools<br>Universities<br>Campuses<br>Research Institutes</div>
-        </div>
-        <div class="five-space-card">
-          <div class="five-space-number">04</div>
-          <div class="five-space-name">Work<br>Spaces</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">Corporate Offices<br>Workspace Interiors<br>Commercial Fit-outs<br>Studio Buildings</div>
-        </div>
-        <div class="five-space-card" style="border-right:none;">
-          <div class="five-space-number">05</div>
-          <div class="five-space-name">Commerce<br>Spaces</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">Retail Architecture<br>Mixed-Use Buildings<br>Commercial Centres<br>Market Halls</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── PHILOSOPHY ─────────────────────────────── -->
+<!-- ── PHILOSOPHY ─────────────────────────────── -->
   <section class="scroll-target" aria-label="Design philosophy">
     <div class="wrap">
       <p class="section-label">Our Approach</p>
-      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:300; max-width:700px; color:var(--sky-dk);">
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; max-width:700px; color:var(--sky-dk);">
         Buildings that outlast their moment
       </h2>
       <p style="max-width:600px; margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
@@ -480,7 +390,7 @@
     <div class="about-grid">
       <div>
         <p class="section-label">The Practice</p>
-        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,3.5rem); font-weight:300; color:var(--sky-dk);">
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,3.5rem); font-weight:400; color:var(--sky-dk);">
           Five Space World
         </h2>
       </div>
@@ -505,7 +415,7 @@
     <div class="contact-section">
       <div class="contact-info">
         <p class="section-label">Get in Touch</p>
-        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--sky-dk);">Start a conversation</h2>
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:400; color:var(--sky-dk);">Start a conversation</h2>
         <p style="margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
           We work on a select number of projects at a time. If you are planning a civic, cultural, institutional, commercial, or workspace project, we would like to hear from you.
         </p>
@@ -604,7 +514,7 @@
 
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
-  
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
     window.addEventListener('load', () => document.body.classList.add('loaded'));
     if (document.readyState === 'complete') document.body.classList.add('loaded');
@@ -710,32 +620,30 @@
       });
     });
 
-
-      // ── Stats counter animation
-      function animateCounter(el) {
-        const target = parseInt(el.dataset.count, 10);
-        const suffix = el.dataset.suffix || '';
-        const duration = 1800;
-        const start = performance.now();
-        function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-        function step(now) {
-          const progress = Math.min((now - start) / duration, 1);
-          el.textContent = Math.round(easeOutExpo(progress) * target) + suffix;
-          if (progress < 1) requestAnimationFrame(step);
-          else { el.textContent = target + suffix; el.classList.add('counted'); }
-        }
-        requestAnimationFrame(step);
-      }
-      const statsObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.stat-number[data-count]').forEach((el, idx) => {
-            if (!el.dataset.animated) { el.dataset.animated = 'true'; setTimeout(() => animateCounter(el), idx * 180); }
-          });
-          statsObserver.unobserve(entry.target);
-        }
-      }), { threshold: 0.4 });
-      const statsBar = document.querySelector('.stats-bar');
-      if (statsBar) statsObserver.observe(statsBar);
+    // ── Stats counter animation
+    function animateCounter(el) {
+      var target=parseInt(el.dataset.count,10), suffix=el.dataset.suffix||'';
+      var dur=1800, s=performance.now();
+      function ease(t){return t===1?1:1-Math.pow(2,-10*t);}
+      (function step(now){
+        var p=Math.min((now-s)/dur,1);
+        el.textContent=Math.round(ease(p)*target)+suffix;
+        if(p<1)requestAnimationFrame(step);
+        else{el.textContent=target+suffix;el.classList.add('counted');}
+      })(s);
+    }
+    var _sb=document.querySelector('.stats-bar');
+    if(_sb){
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.querySelectorAll('.stat-number[data-count]').forEach(function(el,i){
+              if(!el.dataset.animated){el.dataset.animated='1';setTimeout(function(){animateCounter(el);},i*180);}
+            });
+          }
+        });
+      },{threshold:0.4}).observe(_sb);
+    }
 
     // ── Featured projects
     async function loadFeaturedProjects() {
