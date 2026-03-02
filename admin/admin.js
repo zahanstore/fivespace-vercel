@@ -151,7 +151,7 @@ modal.addEventListener('click', e => { if (e.target === modal) modal.classList.r
 
 function resetForm() {
   ['projectId','pTitle','pSlug','pLocation','pYear','pCategory',
-   'pMaterials','pMainImage','pDescription','pGallery'].forEach(id => {
+   'pMaterials','pArea','pMainImage','pDescription','pGallery'].forEach(id => {
     document.getElementById(id).value = '';
   });
   delete document.getElementById('pSlug').dataset.manual;
@@ -269,6 +269,7 @@ async function editProject(id) {
     document.getElementById('pYear').value                  = p.year          || '';
     document.getElementById('pCategory').value              = p.category      || '';
     document.getElementById('pMaterials').value             = p.materials     || '';
+    document.getElementById('pArea').value                  = p.area          || '';
     document.getElementById('pMainImage').value             = p.main_image_url || '';
     document.getElementById('pDescription').value           = p.description   || '';
     document.getElementById('pGallery').value               = p.gallery ? JSON.stringify(p.gallery, null, 2) : '';
@@ -322,6 +323,7 @@ document.getElementById('projectForm').addEventListener('submit', async e => {
     year:           document.getElementById('pYear').value,
     category:       document.getElementById('pCategory').value,
     materials:      document.getElementById('pMaterials').value,
+    area:           document.getElementById('pArea').value,
     main_image_url: document.getElementById('pMainImage').value,
     description:    document.getElementById('pDescription').value,
     gallery,
@@ -392,9 +394,8 @@ async function loadMessages() {
 
 // ── EXPOSE GLOBALS ──
 // onclick attributes in innerHTML can only call global functions
-window.editProject    = editProject;
-window.confirmDelete  = confirmDelete;
-window.deleteProject  = deleteProject;
+window.editProject   = editProject;
+window.deleteProject = deleteProject;
 
 // ── INIT ──
 checkAuth();
