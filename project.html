@@ -20,19 +20,80 @@
     [data-theme="dark"] .project-meta-bar             { border-color: rgba(255,255,255,0.1); }
     [data-theme="dark"] #projectContent a             { color: #7EB8D8 !important; }
     [data-theme="dark"] figcaption                    { color: #6FA8C8 !important; }
-
-    /* Description text injected dynamically — target by inline style */
-    [data-theme="dark"] #projectContent div {
-      color: #B8D0E0;
-    }
-    /* Override back for structural divs that shouldn't be coloured */
+    [data-theme="dark"] #projectContent div           { color: #B8D0E0; }
     [data-theme="dark"] .project-meta-bar,
     [data-theme="dark"] .project-meta-item,
-    [data-theme="dark"] .gallery-grid {
-      color: inherit;
-    }
+    [data-theme="dark"] .gallery-grid                 { color: inherit; }
 
     p { font-weight: 500; }
+
+    /* ── Gallery zoom cursor ── */
+    .gallery-grid figure {
+      cursor: zoom-in;
+      overflow: hidden;
+      position: relative;
+      margin: 0;
+    }
+    .gallery-grid figure img {
+      transition: transform 0.4s ease;
+      width: 100%;
+      display: block;
+    }
+    .gallery-grid figure:hover img { transform: scale(1.03); }
+    .project-hero-img { cursor: zoom-in; }
+
+    /* ── Lightbox ── */
+    .lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .lb-overlay.open { display: flex; }
+    .lb-img {
+      max-width: 100%;
+      max-height: 88svh;
+      object-fit: contain;
+      border-radius: 2px;
+      box-shadow: 0 8px 60px rgba(0,0,0,0.8);
+      user-select: none;
+      pointer-events: none;
+    }
+    .lb-btn {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 10001;
+    }
+    .lb-btn:hover { background: rgba(255,255,255,0.28); }
+    .lb-close { top: 1.1rem; right: 1.1rem; width:2.6rem; height:2.6rem; font-size:1.1rem; }
+    .lb-prev  { top:50%; left:0.8rem;  transform:translateY(-50%); width:2.8rem; height:2.8rem; font-size:1.1rem; }
+    .lb-next  { top:50%; right:0.8rem; transform:translateY(-50%); width:2.8rem; height:2.8rem; font-size:1.1rem; }
+    .lb-caption {
+      position: fixed;
+      bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); text-align: center; max-width: 80vw;
+      z-index: 10001;
+    }
+    .lb-counter {
+      position: fixed;
+      top: 1.3rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.45);
+      z-index: 10001;
+    }
   </style>
 </head>
 <body>
@@ -45,6 +106,16 @@
     </div>
   </div>
 
+  <!-- ── Lightbox overlay ── -->
+  <div class="lb-overlay" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">&#x2715;</button>
+    <button class="lb-btn lb-prev"  id="lbPrev"  aria-label="Previous">&#8592;</button>
+    <img    class="lb-img"          id="lbImg"   src="" alt="" />
+    <button class="lb-btn lb-next"  id="lbNext"  aria-label="Next">&#8594;</button>
+    <div class="lb-caption"         id="lbCap"></div>
+    <div class="lb-counter"         id="lbCount"></div>
+  </div>
+
   <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
   <script>
@@ -55,6 +126,79 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/components.js"></script>
+
+  <!-- Lightbox logic (runs before DOMContentLoaded so initLightbox is ready) -->
+  <script>
+    (function() {
+      var imgs = [], cur = 0;
+      var lb      = document.getElementById('lb');
+      var lbImg   = document.getElementById('lbImg');
+      var lbCap   = document.getElementById('lbCap');
+      var lbCount = document.getElementById('lbCount');
+      var lbPrev  = document.getElementById('lbPrev');
+      var lbNext  = document.getElementById('lbNext');
+
+      function show(i) {
+        cur = ((i % imgs.length) + imgs.length) % imgs.length;
+        lbImg.src           = imgs[cur].src;
+        lbImg.alt           = imgs[cur].cap;
+        lbCap.textContent   = imgs[cur].cap;
+        lbCount.textContent = (cur + 1) + ' / ' + imgs.length;
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      document.getElementById('lbClose').onclick = close;
+      lbPrev.onclick = function(e) { e.stopPropagation(); show(cur - 1); };
+      lbNext.onclick = function(e) { e.stopPropagation(); show(cur + 1); };
+      lb.addEventListener('click', function(e) { if (e.target === lb) close(); });
+
+      // Keyboard
+      document.addEventListener('keydown', function(e) {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape')     close();
+        if (e.key === 'ArrowLeft')  show(cur - 1);
+        if (e.key === 'ArrowRight') show(cur + 1);
+      });
+
+      // Swipe
+      var tx = 0;
+      lb.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 50) dx < 0 ? show(cur + 1) : show(cur - 1);
+      });
+
+      // Called after project HTML renders into DOM
+      window.initLightbox = function() {
+        imgs = [];
+
+        var hero = document.querySelector('.project-hero-img');
+        if (hero) {
+          var hi = imgs.length;
+          imgs.push({ src: hero.src, cap: hero.alt || '' });
+          hero.addEventListener('click', function() { show(hi); });
+        }
+
+        document.querySelectorAll('.gallery-grid figure img').forEach(function(img) {
+          var fc  = img.closest('figure').querySelector('figcaption');
+          var idx = imgs.length;
+          imgs.push({ src: img.src, cap: fc ? fc.textContent.trim() : '' });
+          img.closest('figure').addEventListener('click', function() { show(idx); });
+        });
+
+        var multi = imgs.length > 1;
+        lbPrev.style.display = multi ? '' : 'none';
+        lbNext.style.display = multi ? '' : 'none';
+      };
+    })();
+  </script>
+
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       initComponents({ activePage: 'projects' });
@@ -63,7 +207,7 @@
       window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 400));
       backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-      const slug = new URLSearchParams(window.location.search).get('slug');
+      const slug      = new URLSearchParams(window.location.search).get('slug');
       const container = document.getElementById('projectContent');
 
       if (!slug) {
@@ -100,11 +244,11 @@
             <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:600; margin-bottom:var(--space-sm);">${p.title}</h1>
 
             <div class="project-meta-bar">
-              ${p.location ? `<div class="project-meta-item"><div class="label">Location</div><div class="value">${p.location}</div></div>` : ''}
-              ${p.year     ? `<div class="project-meta-item"><div class="label">Year</div><div class="value">${p.year}</div></div>` : ''}
-              ${p.category ? `<div class="project-meta-item"><div class="label">Type</div><div class="value">${p.category}</div></div>` : ''}
+              ${p.location  ? `<div class="project-meta-item"><div class="label">Location</div><div class="value">${p.location}</div></div>`  : ''}
+              ${p.year      ? `<div class="project-meta-item"><div class="label">Year</div><div class="value">${p.year}</div></div>`            : ''}
+              ${p.category  ? `<div class="project-meta-item"><div class="label">Type</div><div class="value">${p.category}</div></div>`       : ''}
               ${p.materials ? `<div class="project-meta-item"><div class="label">Materials</div><div class="value">${p.materials}</div></div>` : ''}
-              ${p.area ? `<div class="project-meta-item"><div class="label">Area</div><div class="value">${p.area}</div></div>` : ''}
+              ${p.area      ? `<div class="project-meta-item"><div class="label">Area</div><div class="value">${p.area}</div></div>`            : ''}
             </div>
 
             ${p.description ? `
@@ -115,7 +259,7 @@
             ${gallery.length ? `
             <div class="gallery-grid">
               ${gallery.map(img => `
-                <figure style="margin:0;">
+                <figure>
                   <img src="${img.url}" alt="${img.caption || p.title}" loading="lazy" />
                   ${img.caption ? `<figcaption style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:0.4rem;">${img.caption}</figcaption>` : ''}
                 </figure>
@@ -123,6 +267,9 @@
             </div>` : ''}
           </div>
         `;
+
+        // Wire up lightbox once content is in the DOM
+        if (window.initLightbox) window.initLightbox();
 
       } catch (err) {
         container.innerHTML = `<div style="text-align:center; padding:8rem var(--gutter);">
