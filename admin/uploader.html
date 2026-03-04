@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FiveSpace® — Project Migration Tool</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; background: #0f0f0f; color: #e8e0d4; min-height: 100vh; }
+
+    /* Header */
+    .header { background: #0a0a0a; border-bottom: 1px solid #1e1e1e; padding: 16px 24px; display: flex; align-items: center; gap: 12; position: sticky; top: 0; z-index: 10; }
+    .header-brand { font-size: 9px; letter-spacing: 4px; color: #8a7a6a; text-transform: uppercase; margin-bottom: 3px; }
+    .header-title { font-size: 18px; color: #e8e0d4; letter-spacing: 1px; }
+    .tab-bar { margin-left: auto; display: flex; gap: 6px; }
+    .tab-btn { background: transparent; color: #8a7a6a; border: 1px solid #2a2a2a; border-radius: 4px; padding: 6px 14px; cursor: pointer; font-size: 11px; font-family: Georgia, serif; transition: all 0.2s; }
+    .tab-btn.active { background: #c8a96e; color: #0a0a0a; border-color: #c8a96e; }
+
+    /* Layout */
+    .container { padding: 20px 24px; max-width: 900px; margin: 0 auto; }
+    .section { background: #161616; border: 1px solid #2a2a2a; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .section-label { font-size: 9px; letter-spacing: 3px; color: #c8a96e; text-transform: uppercase; margin-bottom: 12px; }
+
+    /* Form */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    label.field-label { display: block; font-size: 10px; letter-spacing: 2px; color: #8a7a6a; text-transform: uppercase; margin-bottom: 6px; }
+    input, select, textarea { width: 100%; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 4px; color: #e8e0d4; padding: 8px 12px; font-size: 13px; font-family: Georgia, serif; outline: none; transition: border-color 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: #c8a96e44; }
+    select option { background: #1a1a1a; }
+    textarea { resize: vertical; }
+
+    /* Buttons */
+    .btn { border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; font-size: 11px; font-family: Georgia, serif; font-weight: 700; letter-spacing: 0.5px; transition: all 0.2s; }
+    .btn-gold { background: #c8a96e; color: #0a0a0a; }
+    .btn-gold:hover { background: #d4b87a; }
+    .btn-outline-gold { background: transparent; color: #c8a96e; border: 1px solid #c8a96e; }
+    .btn-outline-gold:hover { background: #c8a96e11; }
+    .btn-ghost { background: transparent; color: #555; border: 1px solid #2a2a2a; }
+    .btn-ghost:hover { color: #888; border-color: #444; }
+    .btn-success { background: #1a2a1a; color: #81c784; border: 1px solid #2e7d32; cursor: default; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Action bar */
+    .action-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .action-bar-right { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Project card */
+    .project-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 8px; padding: 18px; margin-bottom: 12px; }
+    .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .card-num { font-size: 9px; color: #444; letter-spacing: 2px; }
+    .badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+    .badge-ready { background: #66666622; color: #888; border: 1px solid #66666644; }
+    .badge-enhancing { background: #b8860b33; color: #b8860b; border: 1px solid #b8860b55; }
+    .badge-enhanced { background: #2e7d3233; color: #81c784; border: 1px solid #2e7d3255; }
+    .badge-uploading { background: #1565c033; color: #64b5f6; border: 1px solid #1565c055; }
+    .badge-done { background: #2e7d3233; color: #81c784; border: 1px solid #2e7d3255; }
+    .badge-error { background: #c6282833; color: #ef9a9a; border: 1px solid #c6282855; }
+    .remove-btn { margin-left: auto; background: transparent; border: none; color: #444; cursor: pointer; font-size: 20px; line-height: 1; padding: 0 4px; }
+    .remove-btn:hover { color: #c62828; }
+    .card-footer { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .check-label { display: flex; gap: 5px; align-items: center; cursor: pointer; font-size: 11px; color: #8a7a6a; }
+    .card-actions { margin-left: auto; display: flex; gap: 8px; }
+    .ai-tag { font-size: 9px; color: #c8a96e; letter-spacing: 1px; }
+
+    /* Global message */
+    .global-msg { background: #1a2a1a; border: 1px solid #2e7d32; border-radius: 4px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #81c784; display: none; }
+
+    /* Existing tab */
+    .existing-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .existing-card { background: #161616; border: 1px solid #2a2a2a; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .existing-title { font-size: 14px; color: #e8e0d4; margin-bottom: 3px; }
+    .existing-meta { font-size: 10px; color: #555; }
+    .pub-badge { font-size: 9px; padding: 2px 8px; border-radius: 20px; margin-left: auto; }
+    .pub-badge.published { background: #2e7d3233; color: #81c784; border: 1px solid #2e7d3255; }
+    .pub-badge.draft { background: #33333333; color: #888; border: 1px solid #33333355; }
+    .empty-state { color: #555; text-align: center; padding: 48px; font-size: 13px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <div class="header-brand">FiveSpace®</div>
+    <div class="header-title">Project Migration Tool</div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(0)">➕ Add Projects</button>
+    <button class="tab-btn" onclick="switchTab(1)">📋 Existing</button>
+  </div>
+</div>
+
+<!-- Tab: Add Projects -->
+<div id="tab-add" class="tab-content active">
+  <div class="container">
+
+    <!-- Bulk paste -->
+    <div class="section">
+      <div class="section-label">① Paste Raw Text from Google Sites</div>
+      <textarea id="bulk-raw" rows="5" placeholder="Paste project names, descriptions, locations from old Google Site — even messy text works! Claude AI will parse and structure it automatically 🤖"></textarea>
+      <br><br>
+      <button class="btn btn-gold" id="parse-btn" onclick="parseBulk()">🤖 Parse with Claude AI</button>
+    </div>
+
+    <!-- Action bar -->
+    <div class="action-bar">
+      <span class="section-label" style="margin:0">② Enhance & Upload</span>
+      <div class="action-bar-right">
+        <button class="btn btn-outline-gold" onclick="enhanceAll()">✨ Enhance All</button>
+        <button class="btn btn-gold" onclick="uploadAll()">⬆ Upload All to Supabase</button>
+        <button class="btn btn-ghost" onclick="addProject()">+ Add Project</button>
+      </div>
+    </div>
+
+    <div class="global-msg" id="global-msg"></div>
+    <div id="projects-container"></div>
+  </div>
+</div>
+
+<!-- Tab: Existing -->
+<div id="tab-existing" class="tab-content">
+  <div class="container">
+    <div class="existing-header">
+      <span class="section-label" style="margin:0">FiveSpace Projects in Supabase</span>
+      <button class="btn btn-ghost" style="margin-left:auto" onclick="fetchExisting()">↻ Refresh</button>
+    </div>
+    <div id="existing-container"><div class="empty-state">Click Refresh to load projects.</div></div>
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://wnxjjwoocwcxauzocysy.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndueGpqd29vY3djeGF1em9jeXN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzk4NDksImV4cCI6MjA4NzY1NTg0OX0.9txQEEYW5EenbNdUTLq18MMl_gq7KvL11pIElUOnrlQ";
+  const CATS = ["Knowledge Spaces","Community Spaces","Learning Spaces","Work Spaces","Commerce Spaces"];
+  const OLD_CATS = ["architecture","interiors","landscape","urban-design","archviz"];
+  let projects = [];
+  let counter = 0;
+
+  function slugify(t){ return t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,""); }
+
+  function switchTab(i){
+    document.querySelectorAll(".tab-content").forEach((el,j)=>el.classList.toggle("active",i===j));
+    document.querySelectorAll(".tab-btn").forEach((el,j)=>el.classList.toggle("active",i===j));
+    if(i===1) fetchExisting();
+  }
+
+  function showMsg(txt){ const el=document.getElementById("global-msg"); el.textContent=txt; el.style.display="block"; }
+
+  function addProject(data={}){
+    counter++;
+    const id = Date.now()+Math.random();
+    const proj = { id, title:data.title||"", location:data.location||"", year:data.year||2024, category:CATS[0], oldCat:data.oldCat||"architecture", materials:data.materials||"", area:data.area||"", img:"", desc:"", raw:data.raw||"", status:"idle", enhanced:false, pub:true, feat:false };
+    projects.push(proj);
+    renderProject(proj);
+  }
+
+  function renderProject(proj){
+    const container = document.getElementById("projects-container");
+    const div = document.createElement("div");
+    div.className = "project-card";
+    div.id = `card-${proj.id}`;
+    div.innerHTML = `
+      <div class="card-header">
+        <span class="card-num">PROJECT ${String(projects.indexOf(proj)+1).padStart(2,"0")}</span>
+        <span class="badge badge-ready" id="badge-${proj.id}">Ready</span>
+        <button class="remove-btn" onclick="removeProject('${proj.id}')">×</button>
+      </div>
+      <div class="grid-2">
+        <div><label class="field-label">Title *</label><input id="title-${proj.id}" value="${proj.title}" placeholder="e.g. National Library" oninput="updateField('${proj.id}','title',this.value)"/></div>
+        <div><label class="field-label">Location</label><input id="location-${proj.id}" value="${proj.location}" placeholder="e.g. Mumbai, India" oninput="updateField('${proj.id}','location',this.value)"/></div>
+        <div><label class="field-label">Year</label><input type="number" id="year-${proj.id}" value="${proj.year}" oninput="updateField('${proj.id}','year',this.value)"/></div>
+        <div><label class="field-label">Old Category</label>
+          <select id="oldCat-${proj.id}" onchange="updateField('${proj.id}','oldCat',this.value)">
+            ${OLD_CATS.map(c=>`<option value="${c}" ${proj.oldCat===c?"selected":""}>${c}</option>`).join("")}
+          </select>
+        </div>
+        <div><label class="field-label">New Category (Five Spaces)</label>
+          <select id="category-${proj.id}" onchange="updateField('${proj.id}','category',this.value)">
+            ${CATS.map(c=>`<option value="${c}" ${proj.category===c?"selected":""}>${c}</option>`).join("")}
+          </select>
+        </div>
+        <div><label class="field-label">Materials</label><input id="materials-${proj.id}" value="${proj.materials}" placeholder="e.g. Concrete, Timber" oninput="updateField('${proj.id}','materials',this.value)"/></div>
+        <div><label class="field-label">Area</label><input id="area-${proj.id}" value="${proj.area}" placeholder="e.g. 4,200 m²" oninput="updateField('${proj.id}','area',this.value)"/></div>
+        <div><label class="field-label">Main Image URL</label><input id="img-${proj.id}" value="${proj.img}" placeholder="https://..." oninput="updateField('${proj.id}','img',this.value)"/></div>
+      </div>
+      <div style="margin-bottom:12px"><label class="field-label">Raw Notes (from old site)</label>
+        <textarea id="raw-${proj.id}" rows="3" placeholder="Paste any text from the old project page..." oninput="updateField('${proj.id}','raw',this.value)">${proj.raw}</textarea>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <label class="field-label" style="margin:0">Enhanced Description</label>
+          <span class="ai-tag" id="aitag-${proj.id}" style="display:none">✨ AI-Enhanced</span>
+        </div>
+        <textarea id="desc-${proj.id}" rows="4" placeholder="AI-enhanced description appears here after clicking Enhance..." oninput="updateField('${proj.id}','desc',this.value)">${proj.desc}</textarea>
+      </div>
+      <div class="card-footer">
+        <label class="check-label"><input type="checkbox" id="pub-${proj.id}" ${proj.pub?"checked":""} onchange="updateField('${proj.id}','pub',this.checked)"> Published</label>
+        <label class="check-label"><input type="checkbox" id="feat-${proj.id}" ${proj.feat?"checked":""} onchange="updateField('${proj.id}','feat',this.checked)"> Featured</label>
+        <div class="card-actions">
+          <button class="btn btn-outline-gold" id="enhance-btn-${proj.id}" onclick="enhanceOne('${proj.id}')">✨ Enhance</button>
+          <button class="btn btn-gold" id="upload-btn-${proj.id}" onclick="uploadOne('${proj.id}')">⬆ Upload</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  }
+
+  function removeProject(id){
+    projects = projects.filter(p=>p.id!=id);
+    document.getElementById(`card-${id}`)?.remove();
+  }
+
+  function updateField(id,field,value){
+    const proj = projects.find(p=>p.id==id);
+    if(proj) proj[field] = value;
+  }
+
+  function setBadge(id, status){
+    const el = document.getElementById(`badge-${id}`);
+    if(!el) return;
+    const map = { idle:{l:"Ready",c:"badge-ready"}, enhancing:{l:"✨ Enhancing…",c:"badge-enhancing"}, enhanced:{l:"✨ Enhanced",c:"badge-enhanced"}, uploading:{l:"⬆ Uploading…",c:"badge-uploading"}, done:{l:"✅ Uploaded",c:"badge-done"}, error:{l:"❌ Error",c:"badge-error"} };
+    const m = map[status]||map.idle;
+    el.className = `badge ${m.c}`;
+    el.textContent = m.l;
+  }
+
+  async function callClaude(prompt){
+    const r = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, messages:[{role:"user",content:prompt}] })
+    });
+    const d = await r.json();
+    return d.content?.map(c=>c.text).join("")||"";
+  }
+
+  async function enhanceOne(id){
+    const proj = projects.find(p=>p.id==id);
+    if(!proj||(!proj.title&&!proj.raw)) return;
+    proj.status="enhancing"; setBadge(id,"enhancing");
+    document.getElementById(`enhance-btn-${id}`).disabled=true;
+    try{
+      const txt = await callClaude(`You are an expert architectural copywriter for FiveSpace, a prestigious architecture firm in Mumbai, India. Write a compelling 3-4 sentence description in an authoritative yet poetic tone — think Pritzker Prize citations meets editorial journalism. Focus on spatial quality, materiality, and cultural significance.\n\nProject: ${proj.title}\nLocation: ${proj.location||"India"}\nCategory: ${proj.oldCat}\nYear: ${proj.year}\nNotes: ${proj.raw||proj.desc||"None"}\n\nRespond ONLY with the description paragraph.`);
+      proj.desc = txt; proj.status = "enhanced"; proj.enhanced = true;
+      document.getElementById(`desc-${id}`).value = txt;
+      document.getElementById(`aitag-${id}`).style.display = "inline";
+      setBadge(id,"enhanced");
+    }catch(e){ proj.status="error"; setBadge(id,"error"); }
+    document.getElementById(`enhance-btn-${id}`).disabled=false;
+  }
+
+  async function enhanceAll(){ for(const p of projects) if(p.status==="idle"||p.status==="error") await enhanceOne(p.id); }
+
+  async function uploadOne(id){
+    const proj = projects.find(p=>p.id==id);
+    if(!proj||!proj.title) return;
+    proj.status="uploading"; setBadge(id,"uploading");
+    document.getElementById(`upload-btn-${id}`).disabled=true;
+    const payload = { brand:"fivespace", title:proj.title, slug:slugify(proj.title), location:proj.location, year:parseInt(proj.year)||2024, category:proj.category, materials:proj.materials, area:proj.area, main_image:proj.img||null, description:proj.desc, gallery_images:[], published:proj.pub, featured:proj.feat };
+    try{
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/projects`,{ method:"POST", headers:{ apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`, "Content-Type":"application/json", Prefer:"return=minimal" }, body:JSON.stringify(payload) });
+      if(r.ok||r.status===201){
+        proj.status="done"; setBadge(id,"done");
+        const btn = document.getElementById(`upload-btn-${id}`);
+        btn.textContent="✅ Uploaded"; btn.className="btn btn-success"; btn.disabled=true;
+      } else { throw new Error("Upload failed"); }
+    }catch(e){ proj.status="error"; setBadge(id,"error"); document.getElementById(`upload-btn-${id}`).disabled=false; }
+  }
+
+  async function uploadAll(){
+    showMsg("Uploading all projects to Supabase…");
+    for(const p of projects) if(p.status!=="done") await uploadOne(p.id);
+    showMsg("✅ All projects uploaded successfully!");
+  }
+
+  async function parseBulk(){
+    const raw = document.getElementById("bulk-raw").value.trim();
+    if(!raw) return;
+    const btn = document.getElementById("parse-btn");
+    btn.textContent="🤖 Parsing…"; btn.disabled=true;
+    try{
+      const txt = await callClaude(`Parse this raw text into a JSON array of architecture projects. Each object needs: title, location, year (guess 2018-2024 if missing), oldCat (one of: architecture/interiors/landscape/urban-design/archviz), materials, area, raw (any description text).\n\nRaw text:\n${raw}\n\nRespond ONLY with a valid JSON array. No markdown, no backticks, no explanation.`);
+      const parsed = JSON.parse(txt.replace(/```json|```/g,"").trim());
+      parsed.forEach(p => addProject({title:p.title||"",location:p.location||"",year:p.year||2022,oldCat:p.oldCat||"architecture",materials:p.materials||"",area:p.area||"",raw:p.raw||""}));
+      document.getElementById("bulk-raw").value="";
+    }catch(e){ alert("Parsing failed — please try again or add projects manually."); }
+    btn.textContent="🤖 Parse with Claude AI"; btn.disabled=false;
+  }
+
+  async function fetchExisting(){
+    const container = document.getElementById("existing-container");
+    container.innerHTML = `<div class="empty-state">Loading…</div>`;
+    try{
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/projects?brand=eq.fivespace&select=id,title,slug,category,year,location,published&order=created_at.desc`,{ headers:{ apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}` }});
+      const data = await r.json();
+      if(!Array.isArray(data)||data.length===0){ container.innerHTML=`<div class="empty-state">No FiveSpace projects found yet.</div>`; return; }
+      container.innerHTML = data.map(p=>`
+        <div class="existing-card">
+          <div>
+            <div class="existing-title">${p.title}</div>
+            <div class="existing-meta">${p.slug} · ${p.category||"—"} · ${p.year||"—"} · ${p.location||"—"}</div>
+          </div>
+          <span class="pub-badge ${p.published?"published":"draft"}">${p.published?"Published":"Draft"}</span>
+        </div>
+      `).join("")+`<div style="font-size:11px;color:#555;text-align:center;padding:8px">${data.length} FiveSpace projects total</div>`;
+    }catch(e){ container.innerHTML=`<div class="empty-state">Error loading projects. Check connection.</div>`; }
+  }
+
+  // Start with one empty project
+  addProject();
+</script>
+</body>
+</html>
