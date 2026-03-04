@@ -234,6 +234,7 @@
         // ✅ Show exact Supabase error
         let errMsg = responseText;
         try { const errJson = JSON.parse(responseText); errMsg = errJson.message || errJson.error || responseText; } catch(e){}
+        alert("Supabase says:\n\n" + errMsg);
         throw new Error(errMsg);
       }
     }catch(e){ proj.status="error"; setBadge(id,"error"); showMsg("❌ Upload failed: "+e.message,"error"); document.getElementById(`ubtn-${id}`).disabled=false; }
