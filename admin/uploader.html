@@ -204,15 +204,39 @@
     const proj=projects.find(p=>p.id===id); if(!proj||!proj.title) return;
     proj.status="uploading"; setBadge(id,"uploading");
     document.getElementById(`ubtn-${id}`).disabled=true;
-    const payload={brand:"fivespace",title:proj.title,slug:slugify(proj.title),location:proj.location,year:parseInt(proj.year)||2024,category:proj.category,materials:proj.materials,area:proj.area,main_image:proj.img||null,description:proj.desc,gallery_images:[],published:proj.pub,featured:proj.feat};
+    // ✅ Clean area: strip non-numeric chars, store as string (text column)
+    const cleanArea = proj.area ? proj.area.toString().trim() : null;
+    // ✅ Only send fields that exist in the schema
+    const payload={
+      brand:"fivespace",
+      title:proj.title,
+      slug:slugify(proj.title),
+      location:proj.location||null,
+      year:parseInt(proj.year)||2024,
+      category:proj.category,
+      materials:proj.materials||null,
+      area:cleanArea,
+      main_image:proj.img||null,
+      description:proj.desc||null,
+      gallery_images:[],
+      published:proj.pub,
+      featured:proj.feat
+    };
     try{
-      const r=await fetch(`${SUPABASE_URL}/rest/v1/projects`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(payload)});
+      const r=await fetch(`${SUPABASE_URL}/rest/v1/projects`,{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify(payload)});
+      const responseText = await r.text();
       if(r.ok||r.status===201){
         proj.status="done"; setBadge(id,"done");
         const btn=document.getElementById(`ubtn-${id}`);
         btn.textContent="✅ Uploaded"; btn.className="btn btn-success"; btn.disabled=true;
-      } else { throw new Error(await r.text()); }
-    }catch(e){ proj.status="error"; setBadge(id,"error"); showMsg("Upload failed: "+e.message,"error"); document.getElementById(`ubtn-${id}`).disabled=false; }
+        showMsg(`✅ "${proj.title}" uploaded successfully!`);
+      } else {
+        // ✅ Show exact Supabase error
+        let errMsg = responseText;
+        try { const errJson = JSON.parse(responseText); errMsg = errJson.message || errJson.error || responseText; } catch(e){}
+        throw new Error(errMsg);
+      }
+    }catch(e){ proj.status="error"; setBadge(id,"error"); showMsg("❌ Upload failed: "+e.message,"error"); document.getElementById(`ubtn-${id}`).disabled=false; }
   }
 
   async function uploadAll(){
