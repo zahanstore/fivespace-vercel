@@ -5,7 +5,6 @@ export default async function handler(req, res) {
 
   if (req.method === "OPTIONS") return res.status(200).end();
 
-  // ✅ GET request = debug check
   if (req.method === "GET") {
     const apiKey = process.env.DEEPSEEK_API_KEY;
     return res.status(200).json({
@@ -37,13 +36,18 @@ export default async function handler(req, res) {
       }),
     });
 
-    const data = await response.json();
+    const raw = await response.text(); // get raw text first
+    let data;
+    try { data = JSON.parse(raw); } catch(e) {
+      return res.status(500).json({ error: "DeepSeek returned non-JSON", raw: raw.slice(0, 300) });
+    }
 
     if (!response.ok || data.error) {
+      // ✅ Return FULL error detail so frontend can show it
       return res.status(500).json({
-        error: "DeepSeek API error",
-        status: response.status,
-        detail: data.error?.message || JSON.stringify(data)
+        error: "DeepSeek error",
+        httpStatus: response.status,
+        detail: data.error?.message || data.error?.code || JSON.stringify(data).slice(0, 300)
       });
     }
 
