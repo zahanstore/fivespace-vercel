@@ -75,9 +75,9 @@
   <div class="container">
     <div class="section">
       <div class="section-label">① Paste Raw Text from Google Sites</div>
-      <textarea id="bulk-raw" rows="5" placeholder="Paste project names, descriptions, locations from old Google Site — even messy text! Claude AI will structure it 🤖"></textarea>
+      <textarea id="bulk-raw" rows="5" placeholder="Paste project names, descriptions, locations from old Google Site — even messy text! Groq AI will structure it ⚡"></textarea>
       <br><br>
-      <button class="btn btn-gold" id="parse-btn" onclick="parseBulk()">🤖 Parse with Claude AI</button>
+      <button class="btn btn-gold" id="parse-btn" onclick="parseBulk()">⚡ Parse with Groq AI</button>
     </div>
     <div class="action-bar">
       <span class="section-label" style="margin:0">② Enhance & Upload</span>
@@ -154,9 +154,9 @@
       <div style="margin-bottom:14px">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
           <label class="field-label" style="margin:0">Enhanced Description</label>
-          <span class="ai-tag" id="aitag-${id}" style="display:none">✨ AI-Enhanced</span>
+          <span class="ai-tag" id="aitag-${id}" style="display:none">⚡ Groq-Enhanced</span>
         </div>
-        <textarea id="desc-${id}" rows="4" placeholder="AI description appears here after enhancement..." oninput="upd('${id}','desc',this.value)">${esc(proj.desc)}</textarea>
+        <textarea id="desc-${id}" rows="4" placeholder="Groq AI description appears here after enhancement..." oninput="upd('${id}','desc',this.value)">${esc(proj.desc)}</textarea>
       </div>
       <div class="card-footer">
         <label class="check-label"><input type="checkbox" ${proj.pub?"checked":""} onchange="upd('${id}','pub',this.checked)"> Published</label>
@@ -178,7 +178,7 @@
     const x=m[s]||m.idle; el.className=`badge ${x.c}`; el.textContent=x.l;
   }
 
-  async function callClaude(prompt){
+  async function callGroq(prompt){
     const r=await fetch(PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
     if(!r.ok) throw new Error(`Proxy ${r.status}`);
     const d=await r.json(); return d.text||"";
@@ -189,7 +189,7 @@
     proj.status="enhancing"; setBadge(id,"enhancing");
     document.getElementById(`ebtn-${id}`).disabled=true;
     try{
-      const txt=await callClaude(`You are an expert architectural copywriter for FiveSpace, a prestigious architecture firm in Mumbai, India. Write a compelling 3-4 sentence description in an authoritative yet poetic tone — think Pritzker Prize citations meets editorial journalism. Focus on spatial quality, materiality, and cultural significance.\n\nProject: ${proj.title}\nLocation: ${proj.location||"India"}\nCategory: ${proj.oldCat}\nYear: ${proj.year}\nNotes: ${proj.raw||proj.desc||"None"}\n\nRespond ONLY with the description paragraph.`);
+      const txt=await callGroq(`You are an expert architectural copywriter for FiveSpace, a prestigious architecture firm in Mumbai, India. Write a compelling 3-4 sentence description in an authoritative yet poetic tone — think Pritzker Prize citations meets editorial journalism. Focus on spatial quality, materiality, and cultural significance.\n\nProject: ${proj.title}\nLocation: ${proj.location||"India"}\nCategory: ${proj.oldCat}\nYear: ${proj.year}\nNotes: ${proj.raw||proj.desc||"None"}\n\nRespond ONLY with the description paragraph.`);
       proj.desc=txt; proj.status="enhanced"; proj.enhanced=true;
       document.getElementById(`desc-${id}`).value=txt;
       document.getElementById(`aitag-${id}`).style.display="inline";
@@ -224,15 +224,15 @@
   async function parseBulk(){
     const raw=document.getElementById("bulk-raw").value.trim(); if(!raw) return;
     const btn=document.getElementById("parse-btn");
-    btn.textContent="🤖 Parsing…"; btn.disabled=true;
+    btn.textContent="⚡ Parsing…"; btn.disabled=true;
     try{
-      const txt=await callClaude(`Parse this raw text into a JSON array of architecture projects. Each object: title, location, year (guess 2018-2024 if missing), oldCat (one of: architecture/interiors/landscape/urban-design/archviz), materials, area, raw (any description).\n\nRaw text:\n${raw}\n\nRespond ONLY with a valid JSON array. No markdown, no backticks.`);
+      const txt=await callGroq(`Parse this raw text into a JSON array of architecture projects. Each object: title, location, year (guess 2018-2024 if missing), oldCat (one of: architecture/interiors/landscape/urban-design/archviz), materials, area, raw (any description).\n\nRaw text:\n${raw}\n\nRespond ONLY with a valid JSON array. No markdown, no backticks.`);
       const parsed=JSON.parse(txt.replace(/```json|```/g,"").trim());
       parsed.forEach(p=>addProject({title:p.title||"",location:p.location||"",year:p.year||2022,oldCat:p.oldCat||"architecture",materials:p.materials||"",area:p.area||"",raw:p.raw||""}));
       document.getElementById("bulk-raw").value="";
       showMsg(`✅ Parsed ${parsed.length} projects!`);
     }catch(e){ showMsg("Parsing failed: "+e.message,"error"); }
-    btn.textContent="🤖 Parse with Claude AI"; btn.disabled=false;
+    btn.textContent="⚡ Parse with Groq AI"; btn.disabled=false;
   }
 
   async function fetchExisting(){
