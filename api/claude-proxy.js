@@ -1,16 +1,24 @@
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") return res.status(200).end();
+
+  // ✅ GET request = debug check
+  if (req.method === "GET") {
+    const apiKey = process.env.DEEPSEEK_API_KEY;
+    return res.status(200).json({
+      status: "proxy alive",
+      keySet: !!apiKey,
+      keyPreview: apiKey ? apiKey.slice(0, 8) + "..." : "NOT SET"
+    });
+  }
+
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const apiKey = process.env.DEEPSEEK_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: "DEEPSEEK_API_KEY not set in Vercel environment variables" });
-  }
+  if (!apiKey) return res.status(500).json({ error: "DEEPSEEK_API_KEY not set" });
 
   try {
     const { prompt } = req.body;
@@ -34,6 +42,7 @@ export default async function handler(req, res) {
     if (!response.ok || data.error) {
       return res.status(500).json({
         error: "DeepSeek API error",
+        status: response.status,
         detail: data.error?.message || JSON.stringify(data)
       });
     }
@@ -42,7 +51,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ text });
 
   } catch (err) {
-    console.error("Proxy error:", err);
     return res.status(500).json({ error: "Proxy failed", detail: err.message });
   }
 }
