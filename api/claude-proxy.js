@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: "GROQ_API_KEY not set in Vercel environment variables" });
+  if (!apiKey) return res.status(500).json({ error: "GROQ_API_KEY not set" });
 
   try {
     const { prompt } = req.body;
@@ -30,8 +30,9 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
+        model: "llama-3.1-8b-instant", // ✅ updated model
         max_tokens: 2000,
+        temperature: 0.3,
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -39,14 +40,14 @@ export default async function handler(req, res) {
     const raw = await response.text();
     let data;
     try { data = JSON.parse(raw); } catch(e) {
-      return res.status(500).json({ error: "Groq returned non-JSON", raw: raw.slice(0, 300) });
+      return res.status(500).json({ error: "Non-JSON from Groq", raw: raw.slice(0, 500) });
     }
 
     if (!response.ok || data.error) {
       return res.status(500).json({
-        error: "Groq API error",
+        error: "Groq error: " + (data.error?.message || data.error?.code || "unknown"),
         httpStatus: response.status,
-        detail: data.error?.message || JSON.stringify(data).slice(0, 300)
+        full: JSON.stringify(data).slice(0, 500)
       });
     }
 
@@ -54,6 +55,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ text });
 
   } catch (err) {
-    return res.status(500).json({ error: "Proxy failed", detail: err.message });
+    return res.status(500).json({ error: "Proxy exception: " + err.message });
   }
 }
