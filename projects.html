@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects — Five Space World</title>
   <link rel="icon" type="image/png" href="/assets/logo.png" />
-  <meta name="description" content="The complete project archive of Five Space World — knowledge, community, learning, work and commerce spaces across 12 countries." />
+  <meta name="description" content="The complete project archive of Five Space World — knowledge, community, learning, productive and residential spaces across 12 countries." />
   <link rel="canonical" href="https://fivespace.zahan.one/projects" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
   <style>
+    /* ── Font system ── */
+    /* Display: Playfair Display ('--font-display') | Body: DM Sans ('--font-body') */
+
     /* ── Dark mode readability ── */
     [data-theme="dark"] .page-header h1 { color: #C8DFF0 !important; }
     [data-theme="dark"] .section-label { color: #6FA8C8; }
@@ -31,6 +34,57 @@
     [data-theme="dark"] .project-card-meta  { color: #6FA8C8; }
     [data-theme="dark"] .all-projects-grid  { background: transparent; }
     p { font-weight: 500; }
+
+    /* ── Page header entrance ── */
+    @keyframes headerIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .page-header .section-label { opacity: 0; animation: headerIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+    .page-header h1             { opacity: 0; animation: headerIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
+
+    /* ── Filter bar entrance ── */
+    .filter-bar { opacity: 0; animation: headerIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
+
+    /* ── Filter button active accent line ── */
+    .filter-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--sky);
+      transition: width 0.3s ease;
+    }
+    .filter-btn:not(.active):hover::after { width: 100%; }
+
+    /* ── Project card hover lift ── */
+    .project-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(14,50,72,0.12);
+    }
+
+    /* ── Grid stagger entrance ── */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .all-projects-grid .project-card,
+    .all-projects-grid .project-skeleton {
+      animation: cardIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .all-projects-grid > *:nth-child(1)  { animation-delay: 0.05s; }
+    .all-projects-grid > *:nth-child(2)  { animation-delay: 0.12s; }
+    .all-projects-grid > *:nth-child(3)  { animation-delay: 0.19s; }
+    .all-projects-grid > *:nth-child(4)  { animation-delay: 0.26s; }
+    .all-projects-grid > *:nth-child(5)  { animation-delay: 0.33s; }
+    .all-projects-grid > *:nth-child(6)  { animation-delay: 0.40s; }
   </style>
 </head>
 <body>
@@ -47,8 +101,8 @@
     <button class="filter-btn" data-cat="Knowledge">Knowledge</button>
     <button class="filter-btn" data-cat="Community">Community</button>
     <button class="filter-btn" data-cat="Learning">Learning</button>
-    <button class="filter-btn" data-cat="Work">Work</button>
-    <button class="filter-btn" data-cat="Commerce">Commerce</button>
+    <button class="filter-btn" data-cat="Productive">Productive</button>
+    <button class="filter-btn" data-cat="Residential">Residential</button>
   </div>
 
   <div class="all-projects-grid" id="allProjects">
