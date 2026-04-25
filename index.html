@@ -48,16 +48,31 @@
 
     .five-spaces-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 0;
       border-top: 1px solid var(--stone-lt);
     }
 
+    /* Row 1: 3 cards spanning 2 columns each; Row 2: 2 cards centered */
+    .five-spaces-grid .five-space-card:nth-child(1),
+    .five-spaces-grid .five-space-card:nth-child(2),
+    .five-spaces-grid .five-space-card:nth-child(3) { grid-column: span 2; }
+    .five-spaces-grid .five-space-card:nth-child(4) { grid-column: 2 / span 2; }
+    .five-spaces-grid .five-space-card:nth-child(5) { grid-column: 4 / span 2; }
+
     @media (max-width: 900px) {
-      .five-spaces-grid { grid-template-columns: 1fr 1fr; }
+      .five-spaces-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .five-spaces-grid .five-space-card:nth-child(1),
+      .five-spaces-grid .five-space-card:nth-child(2),
+      .five-spaces-grid .five-space-card:nth-child(3),
+      .five-spaces-grid .five-space-card:nth-child(4) { grid-column: span 2; }
+      .five-spaces-grid .five-space-card:nth-child(5) { grid-column: 2 / span 2; }
     }
     @media (max-width: 500px) {
       .five-spaces-grid { grid-template-columns: 1fr; }
+      .five-spaces-grid .five-space-card { grid-column: 1 !important; }
     }
 
     .five-space-card {
@@ -71,6 +86,7 @@
     }
 
     .five-space-card:nth-child(3n) { border-right: none; }
+    .five-space-card:last-child { border-right: none; border-bottom: none; }
     @media (max-width: 900px) {
       .five-space-card:nth-child(3n) { border-right: 1px solid var(--stone-lt); }
       .five-space-card:nth-child(2n) { border-right: none; }
@@ -216,9 +232,9 @@
     /* ── Five Spaces ── */
     .five-spaces-intro { max-width: 640px; margin-bottom: var(--space-xl); }
     .five-spaces-intro p { margin-top: var(--space-sm); color: var(--slate); line-height: 1.9; font-size: 1rem; font-weight: 500; }
-    .five-spaces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
+    .five-spaces-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
     [data-theme="light"] .five-spaces-grid { border-top-color: #D0D8E0; }
-    @media (max-width: 900px) { .five-spaces-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .five-spaces-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 500px) { .five-spaces-grid { grid-template-columns: 1fr; } }
     .five-space-card { padding: var(--space-md) var(--space-sm); border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; transition: background 0.3s ease; cursor: default; }
     [data-theme="light"] .five-space-card { border-right-color: #D0D8E0; border-bottom-color: #D0D8E0; }
@@ -278,6 +294,8 @@
   <!-- ── HERO ──────────────────────────────────── -->
   <section class="hero" aria-label="Five Space World — Architecture practice">
     <div class="hero-ornament" aria-hidden="true"></div>
+    <div class="hero-ornament hero-ornament-2" aria-hidden="true"></div>
+    <div class="hero-ornament hero-ornament-3" aria-hidden="true"></div>
 
     <p class="hero-eyebrow">Five Space World</p>
 
@@ -294,14 +312,28 @@
       <span aria-hidden="true"> · </span>
       <a href="#five-spaces">Learning</a>
       <span aria-hidden="true"> · </span>
-      <a href="#five-spaces">Work</a>
-      <span aria-hidden="true"> · </span>
-      <a href="#five-spaces">Commerce</a>
+      <a href="#five-spaces">Productive</a>
       <span aria-hidden="true"> · </span>
       <a href="#five-spaces">Residential</a>
     </p>
 
-    <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
+    <a href="#work" class="btn-outline hero-cta" style="margin-top: var(--space-md);">View Our Work</a>
+
+    <!-- Marquee ticker -->
+    <div class="hero-marquee" aria-hidden="true">
+      <div class="hero-marquee-track">
+        <span>Knowledge Spaces</span><span class="marquee-dot">·</span>
+        <span>Community Spaces</span><span class="marquee-dot">·</span>
+        <span>Learning Spaces</span><span class="marquee-dot">·</span>
+        <span>Productive Spaces</span><span class="marquee-dot">·</span>
+        <span>Residential Spaces</span><span class="marquee-dot">·</span>
+        <span>Knowledge Spaces</span><span class="marquee-dot">·</span>
+        <span>Community Spaces</span><span class="marquee-dot">·</span>
+        <span>Learning Spaces</span><span class="marquee-dot">·</span>
+        <span>Productive Spaces</span><span class="marquee-dot">·</span>
+        <span>Residential Spaces</span><span class="marquee-dot">·</span>
+      </div>
+    </div>
   </section>
 
   <!-- ── FEATURED WORK ──────────────────────────── -->
@@ -356,7 +388,7 @@
           Five spaces that make<br><em>cities whole</em>
         </h2>
         <p>
-          The name is intentional. Every city is held together by five kinds of space — where knowledge is kept, where communities gather, where people learn, where work happens, and where commerce moves. We design all five.
+          The name is intentional. Every city is held together by five kinds of space — where knowledge is preserved, where communities gather, where people learn, where they work and trade, and where they make their homes. We design all five, from civic scale to the private interior.
         </p>
       </div>
 
@@ -401,42 +433,29 @@
           </div>
         </div>
 
-        <!-- 04 Work -->
+        <!-- 04 Productive -->
         <div class="five-space-card">
           <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="4" width="24" height="24"/><line x1="4" y1="11" x2="28" y2="11"/><line x1="4" y1="18" x2="28" y2="18"/><line x1="11" y1="4" x2="11" y2="28"/><line x1="21" y1="4" x2="21" y2="28"/><rect x="13" y="20" width="6" height="8" fill="currentColor" stroke="none" opacity="0.15"/>
+            <rect x="3" y="5" width="15" height="24"/><rect x="18" y="11" width="11" height="18"/><line x1="3" y1="10" x2="18" y2="10"/><line x1="3" y1="15" x2="18" y2="15"/><line x1="3" y1="20" x2="18" y2="20"/><line x1="8" y1="5" x2="8" y2="29"/><line x1="13" y1="5" x2="13" y2="29"/><line x1="22" y1="15" x2="22" y2="29"/><rect x="9" y="22" width="5" height="7" fill="currentColor" stroke="none" opacity="0.15"/>
           </svg>
           <div class="five-space-number">04</div>
-          <div class="five-space-name">Work<br>Spaces</div>
+          <div class="five-space-name">Productive<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Corporate Offices<br>Workspace Interiors<br>Commercial Fit-outs<br>Studio Buildings
+            Corporate Offices<br>Retail Architecture<br>Mixed-Use Buildings<br>Studio Buildings<br>Market Halls
           </div>
         </div>
 
-        <!-- 05 Commerce -->
+        <!-- 05 Residential -->
         <div class="five-space-card">
           <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12L7 4h18l4 8"/><rect x="3" y="12" width="26" height="16"/><path d="M3 12 Q16 19 29 12"/><rect x="13" y="18" width="6" height="10"/>
+            <path d="M2 16L16 4l14 12"/><rect x="4" y="16" width="24" height="13"/><line x1="16" y1="16" x2="16" y2="29"/><rect x="6" y="18" width="5" height="5"/><rect x="21" y="18" width="5" height="5"/><rect x="12" y="22" width="8" height="7"/><path d="M10 4.5v3M22 4.5v3"/>
           </svg>
           <div class="five-space-number">05</div>
-          <div class="five-space-name">Commerce<br>Spaces</div>
+          <div class="five-space-name">Residential<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Retail Architecture<br>Mixed-Use Buildings<br>Commercial Centres<br>Market Halls
-          </div>
-        </div>
-
-        <!-- 06 Residential Interior -->
-        <div class="five-space-card">
-          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 14L16 4l13 10v14H3z"/><rect x="12" y="19" width="8" height="9"/><rect x="5" y="15" width="6" height="6"/><rect x="21" y="15" width="6" height="6"/>
-          </svg>
-          <div class="five-space-number">06</div>
-          <div class="five-space-name">Residential<br>Interiors</div>
-          <span class="five-space-dash"></span>
-          <div class="five-space-types">
-            Luxury Residences<br>Apartment Interiors<br>Villa Design<br>Private Homes
+            Private Villas<br>Housing Developments<br>Apartment Buildings<br>Bespoke Interiors<br>Landscape & Grounds
           </div>
         </div>
 
@@ -504,7 +523,7 @@
           Five Space World was founded on the belief that architecture is the most public of arts. Unlike a painting or a poem, a building cannot be avoided — it occupies the shared world, shaping the experience of everyone who passes through or near it.
         </p>
         <p style="margin-top:var(--space-sm); line-height:1.9; color:var(--slate);">
-          Our work spans all five spaces of civic life — cultural institutions, community buildings, educational campuses, corporate workplaces, and commercial architecture. We approach each project as a long-term investment in the places and communities we serve.
+          Our work spans all five spaces of civic life — knowledge institutions, community buildings, educational campuses, productive environments for work and commerce, and residential architecture from private villas to housing at scale. We approach each project as a long-term investment in the places and communities we serve.
         </p>
         <p style="margin-top:var(--space-md); font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--sky-lt);">
           Sister practice:
@@ -522,7 +541,7 @@
         <p class="section-label">Get in Touch</p>
         <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:400; color:var(--sky-dk);">Start a conversation</h2>
         <p style="margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
-          We work on a select number of projects at a time. If you are planning a civic, cultural, institutional, commercial, or workspace project, we would like to hear from you.
+          We work on a select number of projects at a time. If you are planning a civic, cultural, institutional, productive, or residential project — at any scale — we would like to hear from you.
         </p>
         <div class="contact-detail">
           <div class="contact-detail-item">
@@ -585,23 +604,26 @@
                   <option>University / Campus</option>
                   <option>Research Institute</option>
                 </optgroup>
-                <optgroup label="Work Spaces">
+                <optgroup label="Productive Spaces">
                   <option>Corporate Office</option>
                   <option>Workspace Fit-out</option>
                   <option>Studio Building</option>
-                </optgroup>
-                <optgroup label="Commerce Spaces">
                   <option>Retail Architecture</option>
                   <option>Mixed-Use Building</option>
                   <option>Commercial Centre</option>
+                  <option>Market Hall</option>
                 </optgroup>
-                <optgroup label="Residential Interiors">
-                  <option>Luxury Residence</option>
-                  <option>Apartment Interior</option>
-                  <option>Villa Design</option>
+                <optgroup label="Residential Spaces">
+                  <option>Private Villa</option>
+                  <option>Housing Development</option>
+                  <option>Apartment Building</option>
+                  <option>Bespoke Interior</option>
+                  <option>Private Home</option>
+                </optgroup>
                   <option>Private Home</option>
                 </optgroup>
                 <option value="Other">Other</option>
+
               </select>
             </div>
             <div class="form-group">
