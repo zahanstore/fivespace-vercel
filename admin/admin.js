@@ -151,7 +151,7 @@ modal.addEventListener('click', e => { if (e.target === modal) modal.classList.r
 
 function resetForm() {
   ['projectId','pTitle','pSlug','pLocation','pYear','pCategory',
-   'pMaterials','pArea','pMainImage','pDescription','pGallery'].forEach(id => {
+   'pDiscipline','pMaterials','pArea','pMainImage','pDescription','pGallery'].forEach(id => {
     document.getElementById(id).value = '';
   });
   delete document.getElementById('pSlug').dataset.manual;
@@ -268,6 +268,7 @@ async function editProject(id) {
     document.getElementById('pLocation').value              = p.location      || '';
     document.getElementById('pYear').value                  = p.year          || '';
     document.getElementById('pCategory').value              = p.category      || '';
+    document.getElementById('pDiscipline').value            = p.discipline    || '';
     document.getElementById('pMaterials').value             = p.materials     || '';
     document.getElementById('pArea').value                  = p.area          || '';
     document.getElementById('pMainImage').value             = p.main_image_url || '';
@@ -322,6 +323,7 @@ document.getElementById('projectForm').addEventListener('submit', async e => {
     location:       document.getElementById('pLocation').value,
     year:           document.getElementById('pYear').value,
     category:       document.getElementById('pCategory').value,
+    discipline:     document.getElementById('pDiscipline').value,
     materials:      document.getElementById('pMaterials').value,
     area:           document.getElementById('pArea').value,
     main_image_url: document.getElementById('pMainImage').value,
