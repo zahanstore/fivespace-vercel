@@ -159,6 +159,7 @@ function resetForm() {
   document.getElementById('pFeatured').checked               = false;
   document.getElementById('saveError').style.display         = 'none';
   document.getElementById('pMainImagePreview').style.display = 'none';
+  renderGalleryThumbs();
   document.getElementById('pGalleryUploadStatus').style.display = 'none';
 }
 
@@ -170,6 +171,37 @@ document.getElementById('pTitle').addEventListener('input', e => {
 document.getElementById('pSlug').addEventListener('input', function () {
   this.dataset.manual = 'true';
 });
+
+
+// ── GALLERY THUMBNAILS ────────────────────────
+
+function renderGalleryThumbs() {
+  const thumbs  = document.getElementById('pGalleryThumbs');
+  const textarea = document.getElementById('pGallery');
+  if (!thumbs) return;
+
+  let gallery = [];
+  try { const raw = textarea.value.trim(); if (raw) gallery = JSON.parse(raw); } catch { /* ignore */ }
+
+  if (!gallery.length) { thumbs.innerHTML = ''; return; }
+
+  thumbs.innerHTML = gallery.map((img, i) => `
+    <div class="gallery-thumb-item" title="${img.caption || ''}">
+      <img src="${img.url}" alt="${img.caption || 'Image ' + (i+1)}" loading="lazy" />
+      <button type="button" class="gallery-thumb-remove" onclick="removeGalleryItem(${i})" aria-label="Remove image">&#x2715;</button>
+      ${img.caption ? `<div class="gallery-thumb-caption">${img.caption}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+window.removeGalleryItem = function(index) {
+  const textarea = document.getElementById('pGallery');
+  let gallery = [];
+  try { gallery = JSON.parse(textarea.value.trim()); } catch { return; }
+  gallery.splice(index, 1);
+  textarea.value = gallery.length ? JSON.stringify(gallery, null, 2) : '';
+  renderGalleryThumbs();
+};
 
 // ── IMAGE UPLOAD — MAIN IMAGE ─────────────────
 
@@ -248,7 +280,11 @@ document.getElementById('pGalleryFiles').addEventListener('change', async functi
   galleryEl.value      = JSON.stringify([...existing, ...results], null, 2);
   statusEl.textContent = `✓ ${done} image${done > 1 ? 's' : ''} uploaded and added to gallery`;
   statusEl.style.color = 'var(--patina)';
+  renderGalleryThumbs();
 });
+
+// Live-sync thumbnails when raw JSON is edited
+document.getElementById('pGallery').addEventListener('input', renderGalleryThumbs);
 
 // ── EDIT PROJECT ──────────────────────────────
 // Exposed as window.editProject so inline onclick attributes can reach it
@@ -274,6 +310,7 @@ async function editProject(id) {
     document.getElementById('pMainImage').value             = p.main_image_url || '';
     document.getElementById('pDescription').value           = p.description   || '';
     document.getElementById('pGallery').value               = p.gallery ? JSON.stringify(p.gallery, null, 2) : '';
+    renderGalleryThumbs();
     document.getElementById('pPublished').checked           = p.published     || false;
     document.getElementById('pFeatured').checked            = p.featured      || false;
     document.getElementById('saveError').style.display      = 'none';
@@ -286,6 +323,7 @@ async function editProject(id) {
       document.getElementById('pMainImageStatus').textContent    = '';
     } else {
       document.getElementById('pMainImagePreview').style.display = 'none';
+  renderGalleryThumbs();
     }
 
     modal.classList.add('open');

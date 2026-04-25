@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Five Space World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    body { padding-top: 0; background: var(--cream-dk); }
+    .admin-nav { background: var(--sky-dk); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .admin-nav-title { font-family: var(--font-display); color: var(--sky-lt); font-size: 1.4rem; }
+    .admin-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--stone-lt); margin-bottom: var(--space-md); background: var(--cream); }
+    .admin-tab { padding: 0.75rem 1.5rem; font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; border: none; background: none; cursor: pointer; color: var(--slate); border-bottom: 2px solid transparent; transition: all 0.3s; }
+    .admin-tab.active { color: var(--sky); border-bottom-color: var(--sky); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .login-wrap { max-width: 400px; margin: 6rem auto; padding: 2rem; background: var(--cream); }
+    .msg-item { padding: var(--space-sm); background: var(--cream); border: 1px solid var(--stone-lt); margin-bottom: 0.5rem; }
+    .msg-meta { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--sky); margin-bottom: 0.25rem; }
+    .msg-text { font-size: 0.9rem; color: var(--slate); }
+
+    /* ── Gallery thumbnail strip ── */
+    .gallery-thumb-item {
+      position: relative;
+      width: 72px; height: 72px;
+      flex-shrink: 0;
+      border: 1px solid var(--stone-lt);
+      background: var(--cream-dk);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .gallery-thumb-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-thumb-remove {
+      position: absolute;
+      top: 2px; right: 2px;
+      width: 18px; height: 18px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .gallery-thumb-remove:hover { background: #c0392b; }
+    .gallery-thumb-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 0.5rem;
+      padding: 2px 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen">
+    <div class="login-wrap">
+      <p class="section-label">Admin Access</p>
+      <h2 style="font-family:var(--font-display); font-size:2rem; margin-bottom:var(--space-md); color:var(--sky-dk);">Five Space World CMS</h2>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" />
+      </div>
+      <div class="form-group" style="margin-bottom:var(--space-md);">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" />
+      </div>
+      <button class="btn-primary" id="loginBtn" style="width:100%;">Sign In</button>
+      <p id="loginError" style="color:#c0392b; font-size:0.85rem; margin-top:0.75rem; display:none; padding:0.5rem; background:#fff0f0;"></p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="adminPanel" style="display:none;">
+
+    <div class="admin-nav">
+      <span class="admin-nav-title">Five Space World — Admin</span>
+      <button class="btn-sm btn-edit" id="logoutBtn" style="color:var(--stone); border-color:var(--stone);">Log Out</button>
+    </div>
+
+    <div class="admin-wrap">
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="projects">Projects</button>
+        <button class="admin-tab" data-tab="messages">Messages</button>
+      </div>
+
+      <!-- PROJECTS TAB -->
+      <div class="tab-content active" id="tab-projects">
+        <div class="admin-header">
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; color:var(--sky-dk);">Projects</h2>
+          <button class="btn-primary" id="addProjectBtn">+ Add Project</button>
+        </div>
+        <div class="admin-project-list" id="adminProjectList">
+          <p style="color:var(--sage);">Loading…</p>
+        </div>
+      </div>
+
+      <!-- MESSAGES TAB -->
+      <div class="tab-content" id="tab-messages">
+        <div class="admin-header">
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; color:var(--sky-dk);">Contact Messages</h2>
+        </div>
+        <div id="adminMessages">
+          <p style="color:var(--sage);">Loading…</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROJECT MODAL -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal" style="position:relative;">
+      <button class="modal-close" id="modalClose">×</button>
+      <h3 class="modal-title" id="modalTitle">Add Project</h3>
+      <form id="projectForm">
+        <input type="hidden" id="projectId" />
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" id="pTitle" required />
+          </div>
+          <div class="form-group">
+            <label>Slug (auto-generated)</label>
+            <input type="text" id="pSlug" />
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="pLocation" />
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input type="text" id="pYear" placeholder="2024" />
+          </div>
+          <div class="form-group">
+            <label>Category — Five Spaces</label>
+            <select id="pCategory">
+              <option value="">Select a space…</option>
+              <option value="Knowledge Spaces">Knowledge Spaces — Museums, Libraries, Cultural Centres, Archives</option>
+              <option value="Community Spaces">Community Spaces — Civic Halls, Public Buildings, Places of Worship, Community Centres</option>
+              <option value="Learning Spaces">Learning Spaces — Schools, Universities, Campuses, Research Institutes</option>
+              <option value="Productive Spaces">Productive Spaces — Corporate Offices, Retail Architecture, Mixed-Use Buildings, Studio Buildings, Market Halls</option>
+              <option value="Residential Spaces">Residential Spaces — Private Villas, Housing Developments, Apartment Buildings, Bespoke Interiors, Landscape & Grounds</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Discipline</label>
+            <select id="pDiscipline">
+              <option value="">Select a discipline…</option>
+              <option value="Architecture">Architecture</option>
+              <option value="Interior Design">Interior Design</option>
+              <option value="Landscape">Landscape</option>
+              <option value="Urban Design">Urban Design</option>
+              <option value="ArchViz">ArchViz</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Materials</label>
+            <input type="text" id="pMaterials" />
+          </div>
+          <div class="form-group">
+            <label>Area</label>
+            <input type="text" id="pArea" placeholder="e.g. 4,200 m²" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label>Main Image</label>
+          <div style="display:flex; gap:0.5rem; align-items:flex-start; flex-wrap:wrap;">
+            <div style="flex:1; min-width:200px;">
+              <input type="text" id="pMainImage" placeholder="Paste URL, or upload below" />
+            </div>
+            <label class="btn-outline btn-sm" style="cursor:pointer; white-space:nowrap; padding:0.5rem 1rem;">
+              📁 Upload
+              <input type="file" id="pMainImageFile" accept="image/*" style="display:none;" />
+            </label>
+          </div>
+          <div id="pMainImagePreview" style="margin-top:0.5rem; display:none;">
+            <img id="pMainImagePreviewImg" src="" alt="Preview"
+                 style="max-height:120px; max-width:100%; object-fit:cover; border:1px solid var(--stone-lt);" />
+            <p id="pMainImageStatus" style="font-size:0.72rem; color:var(--sky); margin-top:0.25rem;"></p>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label>Description <span style="font-weight:300; opacity:0.6; font-size:0.75em;">(**bold**, *italic* supported)</span></label>
+          <textarea id="pDescription" style="min-height:120px;"
+            placeholder="Describe the project. Use **bold** or *italic* for emphasis."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label>Gallery Images</label>
+          <label class="btn-outline btn-sm" style="cursor:pointer; display:inline-block; margin-bottom:0.5rem; padding:0.5rem 1rem;">
+            📁 Upload Gallery Images
+            <input type="file" id="pGalleryFiles" accept="image/*" multiple style="display:none;" />
+          </label>
+          <p id="pGalleryUploadStatus" style="font-size:0.72rem; color:var(--sky); margin-bottom:0.5rem; display:none;"></p>
+
+          <!-- Visual thumbnail strip -->
+          <div id="pGalleryThumbs" style="
+            display:flex; flex-wrap:wrap; gap:0.5rem;
+            margin-bottom:0.5rem; min-height:0;
+          "></div>
+
+          <!-- Raw JSON (collapsible) -->
+          <details style="margin-top:0.25rem;">
+            <summary style="font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); cursor:pointer; user-select:none; margin-bottom:0.4rem;">
+              Raw JSON
+            </summary>
+            <textarea id="pGallery" style="min-height:80px; font-size:0.75rem;"
+              placeholder='[{"url":"https://...","caption":"Caption here"}]'></textarea>
+          </details>
+        </div>
+
+        <div style="display:flex; gap:1rem; margin-top:1rem; align-items:center;">
+          <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;">
+            <input type="checkbox" id="pPublished" /> Published
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;">
+            <input type="checkbox" id="pFeatured" /> Featured
+          </label>
+        </div>
+
+        <div style="margin-top:var(--space-md); display:flex; gap:1rem;">
+          <button type="submit" class="btn-primary" id="saveProjectBtn">Save Project</button>
+          <button type="button" class="btn-outline" id="cancelModalBtn">Cancel</button>
+        </div>
+        <p id="saveError" style="color:#c0392b; font-size:0.8rem; margin-top:0.5rem; display:none;"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => document.body.classList.add('loaded'));
+    if (document.readyState === 'complete') document.body.classList.add('loaded');
+  </script>
+  <script src="/env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/config.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
