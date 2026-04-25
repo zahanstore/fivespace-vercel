@@ -4,6 +4,31 @@
 
 let allProjects = [];
 
+// ── Canonical Five Spaces categories ──────────
+const CANONICAL_CATEGORIES = [
+  'Knowledge Spaces',
+  'Community Spaces',
+  'Learning Spaces',
+  'Productive Spaces',
+  'Residential Spaces',
+];
+
+// Maps legacy DB values → canonical names
+const CATEGORY_MAP = {
+  'Knowledge':             'Knowledge Spaces',
+  'Community':             'Community Spaces',
+  'Learning':              'Learning Spaces',
+  'Work':                  'Productive Spaces',
+  'Commerce':              'Productive Spaces',
+  'Residential':           'Residential Spaces',
+  'Residential Interiors': 'Residential Spaces',
+};
+
+function normalizeCategory(cat) {
+  if (!cat) return '';
+  return CATEGORY_MAP[cat] || cat;
+}
+
 function renderProjects(projects) {
   const container = document.getElementById('allProjects');
   if (!container) return;
@@ -45,9 +70,12 @@ async function loadProjects() {
   try {
     allProjects = await getProjects(false);
 
-    // Build category filters
-    const cats = [...new Set(allProjects.map(p => p.category).filter(Boolean))];
-    cats.forEach(cat => {
+    // Normalize any legacy category values in place
+    allProjects = allProjects.map(p => ({ ...p, category: normalizeCategory(p.category) }));
+
+    // Build filter buttons from canonical list — only show categories that have projects
+    const usedCats = new Set(allProjects.map(p => p.category).filter(Boolean));
+    CANONICAL_CATEGORIES.filter(c => usedCats.has(c)).forEach(cat => {
       const btn = document.createElement('button');
       btn.className = 'filter-btn';
       btn.setAttribute('data-cat', cat);
