@@ -74,6 +74,9 @@ async function loadProjects() {
     // Normalize any legacy category values in place
     allProjects = allProjects.map(p => ({ ...p, category: normalizeCategory(p.category) }));
 
+    // Sort by year descending — newest at top, oldest at bottom
+    allProjects.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
+
     // Only add dynamic filter buttons if projects.html hasn't hardcoded them
     if (!filterBar.dataset.staticFilters) {
       const usedCats = new Set(allProjects.map(p => p.category).filter(Boolean));
