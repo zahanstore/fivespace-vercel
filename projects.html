@@ -98,11 +98,11 @@
 
   <div class="filter-bar" id="filterBar" data-static-filters="true">
     <button class="filter-btn active" data-cat="all">All</button>
-    <button class="filter-btn" data-cat="Knowledge">Knowledge</button>
-    <button class="filter-btn" data-cat="Community">Community</button>
-    <button class="filter-btn" data-cat="Learning">Learning</button>
-    <button class="filter-btn" data-cat="Productive">Productive</button>
-    <button class="filter-btn" data-cat="Residential">Residential</button>
+    <button class="filter-btn" data-cat="Knowledge Spaces">Knowledge</button>
+    <button class="filter-btn" data-cat="Community Spaces">Community</button>
+    <button class="filter-btn" data-cat="Learning Spaces">Learning</button>
+    <button class="filter-btn" data-cat="Productive Spaces">Productive</button>
+    <button class="filter-btn" data-cat="Residential Spaces">Residential</button>
   </div>
 
   <div class="all-projects-grid" id="allProjects">
@@ -128,25 +128,5 @@
     });
   </script>
   <script src="js/projects.js"></script>
-  <script>
-    // Remove any duplicate filter buttons added dynamically by projects.js.
-    // The five categories are already hardcoded above — this runs after
-    // projects.js to deduplicate by data-cat value, keeping the first match.
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const bar = document.getElementById('filterBar');
-        if (!bar) return;
-        const seen = {};
-        Array.from(bar.querySelectorAll('.filter-btn')).forEach(btn => {
-          const cat = btn.dataset.cat;
-          if (seen[cat]) {
-            btn.remove();
-          } else {
-            seen[cat] = true;
-          }
-        });
-      }, 500);
-    });
-  </script>
 </body>
 </html>
