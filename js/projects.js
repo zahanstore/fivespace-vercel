@@ -32,7 +32,7 @@ function renderProjects(projects) {
       </div>
       <div class="project-card-info">
         <h3 class="project-card-title">${project.title}</h3>
-        <p class="project-card-meta">${[project.location, project.year, project.category].filter(Boolean).join(' · ')}</p>
+        <p class="project-card-meta">${[project.location, project.year, project.category, project.area].filter(Boolean).join(' · ')}</p>
       </div>
     </a>
   `).join('');
