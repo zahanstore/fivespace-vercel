@@ -51,7 +51,7 @@
   --stone-lt:     var(--concrete-pale);
 
   /* Typography */
-  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'DM Sans', system-ui, sans-serif;
 
   /* Spacing */
