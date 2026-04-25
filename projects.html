@@ -33,7 +33,63 @@
     [data-theme="dark"] .project-card-title { color: #C8DFF0; }
     [data-theme="dark"] .project-card-meta  { color: #6FA8C8; }
     [data-theme="dark"] .all-projects-grid  { background: transparent; }
+    [data-theme="dark"] .filter-row-label   { color: #6FA8C8; }
+    [data-theme="dark"] .filter-divider     { border-color: rgba(255,255,255,0.08); }
+
     p { font-weight: 500; }
+
+    /* ── Filter rows wrapper ── */
+    .filter-rows {
+      padding: 0 var(--gutter);
+      max-width: var(--max-w);
+      margin: 0 auto var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Each filter row ── */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0;
+      flex-wrap: wrap;
+    }
+    .filter-row + .filter-row {
+      border-top: 1px solid var(--concrete-lt);
+    }
+    [data-theme="dark"] .filter-row + .filter-row {
+      border-color: rgba(255,255,255,0.08);
+    }
+
+    /* ── Row label ── */
+    .filter-row-label {
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--concrete);
+      white-space: nowrap;
+      min-width: 5rem;
+      padding-right: 0.5rem;
+    }
+
+    /* ── Discipline row hidden until primary is chosen ── */
+    .filter-row.discipline-row {
+      opacity: 0;
+      pointer-events: none;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0;
+      transition: opacity 0.35s ease, max-height 0.35s ease, padding 0.35s ease;
+    }
+    .filter-row.discipline-row.visible {
+      opacity: 1;
+      pointer-events: auto;
+      max-height: 6rem;
+      padding: 0.6rem 0;
+    }
 
     /* ── Page header entrance ── */
     @keyframes headerIn {
@@ -44,7 +100,7 @@
     .page-header h1             { opacity: 0; animation: headerIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
 
     /* ── Filter bar entrance ── */
-    .filter-bar { opacity: 0; animation: headerIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
+    .filter-rows { opacity: 0; animation: headerIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s forwards; }
 
     /* ── Filter button active accent line ── */
     .filter-btn {
@@ -96,13 +152,31 @@
     <h1 style="font-family:var(--font-display); font-size:clamp(2.5rem,6vw,5rem); font-weight:400; color:var(--sky-dk);">All Projects</h1>
   </div>
 
-  <div class="filter-bar" id="filterBar" data-static-filters="true">
-    <button class="filter-btn active" data-cat="all">All</button>
-    <button class="filter-btn" data-cat="Knowledge Spaces">Knowledge</button>
-    <button class="filter-btn" data-cat="Community Spaces">Community</button>
-    <button class="filter-btn" data-cat="Learning Spaces">Learning</button>
-    <button class="filter-btn" data-cat="Productive Spaces">Productive</button>
-    <button class="filter-btn" data-cat="Residential Spaces">Residential</button>
+  <!-- ── Two-tier filter system ── -->
+  <div class="filter-rows">
+
+    <!-- Primary: Five Spaces -->
+    <div class="filter-row" id="filterBar" data-static-filters="true">
+      <span class="filter-row-label">Space</span>
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="Knowledge Spaces">Knowledge</button>
+      <button class="filter-btn" data-cat="Community Spaces">Community</button>
+      <button class="filter-btn" data-cat="Learning Spaces">Learning</button>
+      <button class="filter-btn" data-cat="Productive Spaces">Productive</button>
+      <button class="filter-btn" data-cat="Residential Spaces">Residential</button>
+    </div>
+
+    <!-- Secondary: Discipline (reveals after primary is chosen) -->
+    <div class="filter-row discipline-row" id="disciplineBar" data-static-filters="true">
+      <span class="filter-row-label">Discipline</span>
+      <button class="filter-btn active" data-discipline="all">All</button>
+      <button class="filter-btn" data-discipline="Architecture">Architecture</button>
+      <button class="filter-btn" data-discipline="Interior Design">Interior</button>
+      <button class="filter-btn" data-discipline="Landscape">Landscape</button>
+      <button class="filter-btn" data-discipline="Urban Design">Urban Design</button>
+      <button class="filter-btn" data-discipline="ArchViz">ArchViz</button>
+    </div>
+
   </div>
 
   <div class="all-projects-grid" id="allProjects">
