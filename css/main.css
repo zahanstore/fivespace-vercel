@@ -861,8 +861,8 @@ section { padding: var(--space-xl) var(--gutter); max-width: var(--max-w); margi
 .hero .hero-subtitle-links a { color: rgba(200, 232, 248, 0.85); text-decoration-color: rgba(255,255,255,0.4); }
 .hero .hero-subtitle-links a:hover { color: #FFFFFF; text-decoration-color: rgba(255,255,255,0.9); }
 
-/* ── Hero ornament — white on photo ── */
-.hero .hero-ornament { border-color: rgba(255,255,255,0.12); opacity: 1; }
+/* ── Hero ornament — behind text, white on photo ── */
+.hero .hero-ornament { border-color: rgba(255,255,255,0.12); opacity: 1; z-index: 0; }
 
 /* ── Hero CTA — ghost white on photo ── */
 .hero .btn-outline {
