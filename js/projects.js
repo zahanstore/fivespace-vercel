@@ -20,6 +20,7 @@ const CATEGORY_MAP = {
   'Learning':              'Learning Spaces',
   'Work':                  'Productive Spaces',
   'Commerce':              'Productive Spaces',
+  'Productive':            'Productive Spaces',
   'Residential':           'Residential Spaces',
   'Residential Interiors': 'Residential Spaces',
 };
@@ -73,15 +74,17 @@ async function loadProjects() {
     // Normalize any legacy category values in place
     allProjects = allProjects.map(p => ({ ...p, category: normalizeCategory(p.category) }));
 
-    // Build filter buttons from canonical list — only show categories that have projects
-    const usedCats = new Set(allProjects.map(p => p.category).filter(Boolean));
-    CANONICAL_CATEGORIES.filter(c => usedCats.has(c)).forEach(cat => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn';
-      btn.setAttribute('data-cat', cat);
-      btn.textContent = cat;
-      filterBar.appendChild(btn);
-    });
+    // Only add dynamic filter buttons if projects.html hasn't hardcoded them
+    if (!filterBar.dataset.staticFilters) {
+      const usedCats = new Set(allProjects.map(p => p.category).filter(Boolean));
+      CANONICAL_CATEGORIES.filter(c => usedCats.has(c)).forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.setAttribute('data-cat', cat);
+        btn.textContent = cat;
+        filterBar.appendChild(btn);
+      });
+    }
 
     // Filter click handlers
     filterBar.addEventListener('click', (e) => {
