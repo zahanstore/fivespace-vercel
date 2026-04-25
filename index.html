@@ -48,7 +48,7 @@
 
     .five-spaces-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 0;
       border-top: 1px solid var(--stone-lt);
     }
@@ -65,20 +65,25 @@
       border-right: 1px solid var(--stone-lt);
       border-bottom: 1px solid var(--stone-lt);
       position: relative;
-      transition: background 0.3s ease;
+      transition: background 0.35s ease, transform 0.3s ease, box-shadow 0.3s ease;
       cursor: default;
+      overflow: hidden;
     }
 
-    .five-space-card:last-child {
-      border-right: none;
-    }
-
+    .five-space-card:nth-child(3n) { border-right: none; }
     @media (max-width: 900px) {
+      .five-space-card:nth-child(3n) { border-right: 1px solid var(--stone-lt); }
       .five-space-card:nth-child(2n) { border-right: none; }
+    }
+    @media (max-width: 500px) {
+      .five-space-card { border-right: none; }
     }
 
     .five-space-card:hover {
       background: var(--sky-dk, #1A5276);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(14,50,72,0.18);
+      z-index: 1;
     }
 
     .five-space-card:hover .five-space-number,
@@ -87,8 +92,19 @@
       color: rgba(255,255,255,0.9);
     }
 
-    .five-space-card:hover .five-space-name {
-      color: #ffffff;
+    .five-space-card:hover .five-space-name { color: #ffffff; }
+
+    /* ── Space icon ── */
+    .five-space-icon {
+      width: 36px; height: 36px;
+      color: var(--sky);
+      margin-bottom: 1rem;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease;
+      display: block;
+    }
+    .five-space-card:hover .five-space-icon {
+      color: rgba(255,255,255,0.85);
+      transform: translateY(-4px) scale(1.1);
     }
 
     .five-space-number {
@@ -117,11 +133,12 @@
       height: 1px;
       background: var(--sky);
       margin-bottom: 0.75rem;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, width 0.3s ease;
     }
 
     .five-space-card:hover .five-space-dash {
       background: rgba(255,255,255,0.5);
+      width: 40px;
     }
 
     .five-space-types {
@@ -131,6 +148,20 @@
       color: var(--slate);
       line-height: 1.9;
       transition: color 0.3s ease;
+    }
+
+    /* ── Card stagger entrance ── */
+    .five-space-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.35s ease, box-shadow 0.3s ease;
+    }
+    .five-space-card.card-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .five-space-card:hover {
+      transform: translateY(-3px) !important;
     }
 
     /* ── Philosophy ── */
@@ -185,7 +216,7 @@
     /* ── Five Spaces ── */
     .five-spaces-intro { max-width: 640px; margin-bottom: var(--space-xl); }
     .five-spaces-intro p { margin-top: var(--space-sm); color: var(--slate); line-height: 1.9; font-size: 1rem; font-weight: 500; }
-    .five-spaces-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
+    .five-spaces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid rgba(255,255,255,0.1); }
     [data-theme="light"] .five-spaces-grid { border-top-color: #D0D8E0; }
     @media (max-width: 900px) { .five-spaces-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 500px) { .five-spaces-grid { grid-template-columns: 1fr; } }
@@ -209,6 +240,35 @@
     /* ── Stats pulse ── */
     @keyframes statPulse { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
     .stat-number.counted { animation: statPulse 0.4s ease forwards; }
+
+    /* ── Hero line stagger ── */
+    @keyframes heroIn { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:none; } }
+    .hero-eyebrow  { opacity:0; animation: heroIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+    .hero-line:nth-child(1) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
+    .hero-line:nth-child(2) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; }
+    .hero-line:nth-child(3) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.65s forwards; }
+    .hero-subtitle { opacity:0; animation: heroIn 0.7s ease 1s forwards; }
+    .hero .btn-outline { opacity:0; animation: heroIn 0.7s ease 1.2s forwards; }
+
+    /* ── Philosophy card hover lift ── */
+    .philosophy-item {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .philosophy-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(14,50,72,0.1);
+      border-color: var(--sky);
+    }
+    .philosophy-item h4 {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .philosophy-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .philosophy-item:hover .philosophy-icon {
+      transform: rotate(10deg) scale(1.15);
+    }
   </style>
 </head>
 <body>
@@ -237,6 +297,8 @@
       <a href="#five-spaces">Work</a>
       <span aria-hidden="true"> · </span>
       <a href="#five-spaces">Commerce</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Residential</a>
     </p>
 
     <a href="#work" class="btn-outline" style="margin-top: var(--space-md);">View Our Work</a>
@@ -302,66 +364,79 @@
 
         <!-- 01 Knowledge -->
         <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h10v20H4z"/><path d="M18 6h10v20H18z"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="18" y1="12" x2="28" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/><line x1="18" y1="18" x2="28" y2="18"/>
+          </svg>
           <div class="five-space-number">01</div>
           <div class="five-space-name">Knowledge<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Museums<br>
-            Libraries<br>
-            Cultural Centres<br>
-            Archives
+            Museums<br>Libraries<br>Cultural Centres<br>Archives
           </div>
         </div>
 
         <!-- 02 Community -->
         <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="16,3 2,10 30,10"/><rect x="2" y="26" width="28" height="3"/><line x1="6" y1="10" x2="6" y2="26"/><line x1="12" y1="10" x2="12" y2="26"/><line x1="20" y1="10" x2="20" y2="26"/><line x1="26" y1="10" x2="26" y2="26"/>
+          </svg>
           <div class="five-space-number">02</div>
           <div class="five-space-name">Community<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Civic Halls<br>
-            Public Buildings<br>
-            Places of Worship<br>
-            Community Centres
+            Civic Halls<br>Public Buildings<br>Places of Worship<br>Community Centres
           </div>
         </div>
 
         <!-- 03 Learning -->
         <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4L2 11l14 7 14-7z"/><path d="M8 15v7a8 8 0 0016 0v-7"/><line x1="28" y1="11" x2="28" y2="20"/><circle cx="28" cy="21" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
           <div class="five-space-number">03</div>
           <div class="five-space-name">Learning<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Schools<br>
-            Universities<br>
-            Campuses<br>
-            Research Institutes
+            Schools<br>Universities<br>Campuses<br>Research Institutes
           </div>
         </div>
 
         <!-- 04 Work -->
         <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="24" height="24"/><line x1="4" y1="11" x2="28" y2="11"/><line x1="4" y1="18" x2="28" y2="18"/><line x1="11" y1="4" x2="11" y2="28"/><line x1="21" y1="4" x2="21" y2="28"/><rect x="13" y="20" width="6" height="8" fill="currentColor" stroke="none" opacity="0.15"/>
+          </svg>
           <div class="five-space-number">04</div>
           <div class="five-space-name">Work<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Corporate Offices<br>
-            Workspace Interiors<br>
-            Commercial Fit-outs<br>
-            Studio Buildings
+            Corporate Offices<br>Workspace Interiors<br>Commercial Fit-outs<br>Studio Buildings
           </div>
         </div>
 
         <!-- 05 Commerce -->
-        <div class="five-space-card" style="border-right:none;">
+        <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12L7 4h18l4 8"/><rect x="3" y="12" width="26" height="16"/><path d="M3 12 Q16 19 29 12"/><rect x="13" y="18" width="6" height="10"/>
+          </svg>
           <div class="five-space-number">05</div>
           <div class="five-space-name">Commerce<br>Spaces</div>
           <span class="five-space-dash"></span>
           <div class="five-space-types">
-            Retail Architecture<br>
-            Mixed-Use Buildings<br>
-            Commercial Centres<br>
-            Market Halls
+            Retail Architecture<br>Mixed-Use Buildings<br>Commercial Centres<br>Market Halls
+          </div>
+        </div>
+
+        <!-- 06 Residential Interior -->
+        <div class="five-space-card">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 14L16 4l13 10v14H3z"/><rect x="12" y="19" width="8" height="9"/><rect x="5" y="15" width="6" height="6"/><rect x="21" y="15" width="6" height="6"/>
+          </svg>
+          <div class="five-space-number">06</div>
+          <div class="five-space-name">Residential<br>Interiors</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">
+            Luxury Residences<br>Apartment Interiors<br>Villa Design<br>Private Homes
           </div>
         </div>
 
@@ -384,19 +459,31 @@
 
       <div class="philosophy-grid">
         <div class="philosophy-item">
-          <h4>Public Scale</h4>
+          <h4>
+            <svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l5 3"/></svg>
+            Public Scale
+          </h4>
           <p>We design at the scale of institutions — cultural centres, civic halls, libraries, and infrastructure — spaces that become part of the city's identity.</p>
         </div>
         <div class="philosophy-item">
-          <h4>Material Honesty</h4>
+          <h4>
+            <svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            Material Honesty
+          </h4>
           <p>Concrete that shows its formwork. Stone that carries the quarry. Timber that remembers the forest. We never disguise what a building is made of.</p>
         </div>
         <div class="philosophy-item">
-          <h4>Enduring Form</h4>
+          <h4>
+            <svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12,2 2,19 22,19"/><line x1="12" y1="10" x2="12" y2="15"/><circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none"/></svg>
+            Enduring Form
+          </h4>
           <p>Trends corrode. Geometry endures. Our formal language is rooted in proportional systems that have proven themselves across centuries.</p>
         </div>
         <div class="philosophy-item">
-          <h4>Community First</h4>
+          <h4>
+            <svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            Community First
+          </h4>
           <p>Every building exists in a community. We spend as much time listening to those who will inhabit our buildings as we do drawing them.</p>
         </div>
       </div>
@@ -508,6 +595,12 @@
                   <option>Mixed-Use Building</option>
                   <option>Commercial Centre</option>
                 </optgroup>
+                <optgroup label="Residential Interiors">
+                  <option>Luxury Residence</option>
+                  <option>Apartment Interior</option>
+                  <option>Villa Design</option>
+                  <option>Private Home</option>
+                </optgroup>
                 <option value="Other">Other</option>
               </select>
             </div>
@@ -545,6 +638,21 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('loaded');
       initComponents({ activePage: 'home' });
+
+      // ── Space card stagger entrance
+      const cardObserver = new IntersectionObserver(
+        entries => entries.forEach(e => {
+          if (e.isIntersecting) {
+            const cards = e.target.querySelectorAll('.five-space-card');
+            cards.forEach((card, i) => {
+              setTimeout(() => card.classList.add('card-visible'), i * 100);
+            });
+            cardObserver.unobserve(e.target);
+          }
+        }), { threshold: 0.1 }
+      );
+      const spaceGrid = document.querySelector('.five-spaces-grid');
+      if (spaceGrid) cardObserver.observe(spaceGrid);
 
       // ── Scroll animations
       const observer = new IntersectionObserver(
