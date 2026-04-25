@@ -3,6 +3,8 @@
 // ============================================
 
 let allProjects = [];
+let activeCategory   = 'all';
+let activeDiscipline = 'all';
 
 // ── Canonical Five Spaces categories ──────────
 const CANONICAL_CATEGORIES = [
@@ -28,6 +30,16 @@ const CATEGORY_MAP = {
 function normalizeCategory(cat) {
   if (!cat) return '';
   return CATEGORY_MAP[cat] || cat;
+}
+
+// ── Apply both active filters and re-render ──
+function applyFilters() {
+  const filtered = allProjects.filter(p => {
+    const catMatch  = activeCategory   === 'all' || p.category   === activeCategory;
+    const discMatch = activeDiscipline === 'all' || p.discipline === activeDiscipline;
+    return catMatch && discMatch;
+  });
+  renderProjects(filtered);
 }
 
 function renderProjects(projects) {
@@ -65,31 +77,20 @@ function renderProjects(projects) {
 }
 
 async function loadProjects() {
-  const container = document.getElementById('allProjects');
-  const filterBar = document.getElementById('filterBar');
+  const container     = document.getElementById('allProjects');
+  const filterBar     = document.getElementById('filterBar');
+  const disciplineBar = document.getElementById('disciplineBar');
 
   try {
     allProjects = await getProjects(false);
 
-    // Normalize any legacy category values in place
+    // Normalize legacy category values
     allProjects = allProjects.map(p => ({ ...p, category: normalizeCategory(p.category) }));
 
     // Sort by year descending — newest at top, oldest at bottom
     allProjects.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
 
-    // Only add dynamic filter buttons if projects.html hasn't hardcoded them
-    if (!filterBar.dataset.staticFilters) {
-      const usedCats = new Set(allProjects.map(p => p.category).filter(Boolean));
-      CANONICAL_CATEGORIES.filter(c => usedCats.has(c)).forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-btn';
-        btn.setAttribute('data-cat', cat);
-        btn.textContent = cat;
-        filterBar.appendChild(btn);
-      });
-    }
-
-    // Filter click handlers
+    // ── Primary filter: Five Spaces ──
     filterBar.addEventListener('click', (e) => {
       const btn = e.target.closest('.filter-btn');
       if (!btn) return;
@@ -97,9 +98,32 @@ async function loadProjects() {
       filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      const cat = btn.getAttribute('data-cat');
-      const filtered = cat === 'all' ? allProjects : allProjects.filter(p => p.category === cat);
-      renderProjects(filtered);
+      activeCategory = btn.getAttribute('data-cat');
+
+      // Show discipline row when a specific space is chosen
+      if (activeCategory !== 'all') {
+        disciplineBar.classList.add('visible');
+      } else {
+        disciplineBar.classList.remove('visible');
+        // Reset discipline filter too
+        activeDiscipline = 'all';
+        disciplineBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        disciplineBar.querySelector('[data-discipline="all"]').classList.add('active');
+      }
+
+      applyFilters();
+    });
+
+    // ── Secondary filter: Discipline ──
+    disciplineBar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+
+      disciplineBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      activeDiscipline = btn.getAttribute('data-discipline');
+      applyFilters();
     });
 
     renderProjects(allProjects);
