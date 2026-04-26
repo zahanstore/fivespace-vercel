@@ -436,6 +436,7 @@ async function loadMessages() {
 // onclick attributes in innerHTML can only call global functions
 window.editProject   = editProject;
 window.deleteProject = deleteProject;
+window.confirmDelete  = confirmDelete;
 
 // ── INIT ──
 checkAuth();
