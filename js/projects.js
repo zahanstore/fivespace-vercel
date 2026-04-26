@@ -77,6 +77,10 @@ function renderProjects(projects) {
 }
 
 async function loadProjects() {
+  // ── Read URL param — allows deep-linking from Five Spaces cards ──
+  const urlParams  = new URLSearchParams(window.location.search);
+  const urlCat     = urlParams.get('cat');
+
   const container     = document.getElementById('allProjects');
   const filterBar     = document.getElementById('filterBar');
   const disciplineBar = document.getElementById('disciplineBar');
@@ -87,8 +91,19 @@ async function loadProjects() {
     // Normalize legacy category values
     allProjects = allProjects.map(p => ({ ...p, category: normalizeCategory(p.category) }));
 
-    // Sort by year descending — newest at top, oldest at bottom
+    // Sort by year descending — newest at top
     allProjects.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
+
+    // ── Auto-activate category from URL param ──
+    if (urlCat) {
+      activeCategory = urlCat;
+      const btn = filterBar.querySelector(`[data-cat="${urlCat}"]`);
+      if (btn) {
+        filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        disciplineBar.classList.add('visible');
+      }
+    }
 
     // ── Primary filter: Five Spaces ──
     filterBar.addEventListener('click', (e) => {
@@ -100,12 +115,10 @@ async function loadProjects() {
 
       activeCategory = btn.getAttribute('data-cat');
 
-      // Show discipline row when a specific space is chosen
       if (activeCategory !== 'all') {
         disciplineBar.classList.add('visible');
       } else {
         disciplineBar.classList.remove('visible');
-        // Reset discipline filter too
         activeDiscipline = 'all';
         disciplineBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         disciplineBar.querySelector('[data-discipline="all"]').classList.add('active');
@@ -126,7 +139,10 @@ async function loadProjects() {
       applyFilters();
     });
 
-    renderProjects(allProjects);
+    renderProjects(activeCategory === 'all'
+      ? allProjects
+      : allProjects.filter(p => p.category === activeCategory)
+    );
 
   } catch (err) {
     console.error('Error loading projects:', err);
