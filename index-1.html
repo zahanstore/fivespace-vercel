@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Space World — Architecture at Civilisational Scale</title>
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <meta name="description" content="Five Space World is an architecture and design practice working at civic and institutional scale — cultural centres, public buildings, and environments that endure." />
+  <link rel="canonical" href="https://fivespace.zahan.one" />
+  <meta property="og:title"       content="Five Space World" />
+  <meta property="og:description" content="Architecture at civilisational scale." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://fivespace.zahan.one" />
+  <meta property="og:image"       content="https://fivespace.zahan.one/assets/og-image.jpg" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ── Hero ── */
+    .hero-line { display: block; }
+    .hero-line-indent { padding-left: clamp(2rem, 8vw, 8rem); font-style: italic; }
+
+    /* ── Featured projects ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: var(--space-lg);
+    }
+    @media (max-width: 720px) { .featured-grid { grid-template-columns: 1fr; } }
+
+    /* ── Five Spaces intro ── */
+    .five-spaces-intro { max-width: 640px; margin-bottom: var(--space-xl); }
+    .five-spaces-intro p { margin-top: var(--space-sm); color: var(--slate); line-height: 1.9; font-size: 1rem; font-weight: 500; }
+
+    /* ── UNIFIED Five Spaces Grid — all 5 in one row ── */
+    .five-spaces-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--stone-lt);
+    }
+    [data-theme="light"] .five-spaces-grid { border-top-color: #D0D8E0; }
+    @media (max-width: 900px) { .five-spaces-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .five-spaces-grid { grid-template-columns: 1fr; } }
+
+    .five-space-card {
+      padding: var(--space-md) var(--space-sm);
+      border-right: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.35s ease, box-shadow 0.3s ease;
+    }
+    [data-theme="light"] .five-space-card { border-right-color: #D0D8E0; border-bottom-color: #D0D8E0; }
+    .five-space-card:last-child { border-right: none; }
+    @media (max-width: 900px) { .five-space-card:nth-child(3n) { border-right: none; } }
+    @media (max-width: 560px) { .five-space-card { border-right: none; } }
+    .five-space-card.card-visible { opacity: 1; transform: translateY(0); }
+    .five-space-card:hover { background: #1A5276; transform: translateY(-3px) !important; box-shadow: 0 12px 40px rgba(14,50,72,0.18); z-index: 1; }
+    .five-space-card:hover .five-space-number { color: rgba(255,255,255,0.2); }
+    .five-space-card:hover .five-space-name   { color: #ffffff; }
+    .five-space-card:hover .five-space-types  { color: rgba(255,255,255,0.7); }
+    .five-space-card:hover .five-space-dash   { background: rgba(255,255,255,0.35); width: 40px; }
+    .five-space-card:hover .five-space-icon   { color: rgba(255,255,255,0.85); transform: translateY(-4px) scale(1.1); }
+
+    .five-space-icon { width: 36px; height: 36px; color: var(--sky); margin-bottom: 1rem; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), color 0.3s ease; display: block; }
+    .five-space-number { font-family: var(--font-display); font-size: 2.8rem; font-weight: 400; color: #3A7CA8; line-height: 1; margin-bottom: var(--space-sm); transition: color 0.3s ease; }
+    [data-theme="dark"] .five-space-number { color: #7EB8D8; }
+    .five-space-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; color: #1A4F6E; line-height: 1.2; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+    [data-theme="dark"] .five-space-name { color: #E8F4FC; }
+    .five-space-dash { display: block; width: 24px; height: 1px; background: #2A7FBA; margin-bottom: 0.75rem; transition: background 0.3s ease, width 0.3s ease; }
+    .five-space-types { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #4A7A99; line-height: 1.9; transition: color 0.3s ease; }
+    [data-theme="dark"] .five-space-types { color: #6FA8C8; }
+
+    /* ── Philosophy ── */
+    .philosophy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-md); margin-top: var(--space-lg); }
+    .philosophy-item { padding: var(--space-md); border: 1px solid var(--stone-lt); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .philosophy-item:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(14,50,72,0.1); border-color: var(--sky); }
+    .philosophy-item h4 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--sky); margin-bottom: var(--space-xs); display: flex; align-items: center; gap: 0.5rem; }
+    .philosophy-item p { font-size: 0.9rem; line-height: 1.8; color: var(--slate); font-weight: 500; }
+    .philosophy-icon { width: 20px; height: 20px; flex-shrink: 0; transition: transform 0.3s ease; }
+    .philosophy-item:hover .philosophy-icon { transform: rotate(10deg) scale(1.15); }
+
+    /* ── Contact ── */
+    .contact-section { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--space-xl); align-items: start; }
+    @media (max-width: 768px) { .contact-section { grid-template-columns: 1fr; } }
+
+    /* ── Hero subtitle links ── */
+    .hero-subtitle-links a { color: inherit; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.5); text-underline-offset: 4px; transition: text-decoration-color 0.2s ease, opacity 0.2s ease; }
+    .hero-subtitle-links a:hover { text-decoration-color: rgba(255,255,255,1); opacity: 0.8; }
+
+    p { font-weight: 500; }
+
+    /* ── Hero Sonar ──────────────────────────────────────────────────
+       FIX: main.css rule `.hero > *:not(.hero-ornament) { position: relative }`
+       was overriding position:absolute on .hero-sonar, collapsing it to the
+       normal flow and making it invisible. !important wins the specificity battle.
+    ───────────────────────────────────────────────────────────────── */
+    .hero-sonar {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .sonar-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.28);
+      transform: translate(-50%, -50%);
+      animation: sonar-wave 4.5s ease-out infinite;
+    }
+    .sonar-ring-1 { animation-delay: 0s; }
+    .sonar-ring-2 { animation-delay: 1.5s; }
+    .sonar-ring-3 { animation-delay: 3s; }
+    @keyframes sonar-wave {
+      0%   { width: 0;      height: 0;      opacity: 0.8;  border-color: rgba(255,255,255,0.35); }
+      40%  {                                opacity: 0.4;  border-color: rgba(90,170,212,0.3); }
+      100% { width: 1600px; height: 1600px; opacity: 0;    border-color: rgba(42,127,186,0); }
+    }
+
+    /* ── Hero line stagger ── */
+    @keyframes heroIn { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:none; } }
+    .hero-eyebrow  { opacity:0; animation: heroIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; }
+    .hero-line:nth-child(1) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s forwards; }
+    .hero-line:nth-child(2) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.45s forwards; }
+    .hero-line:nth-child(3) { opacity:0; animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.65s forwards; }
+    .hero-subtitle { opacity:0; animation: heroIn 0.7s ease 1s forwards; }
+    .hero .btn-outline { opacity:0; animation: heroIn 0.7s ease 1.2s forwards; }
+
+    /* ── Stats pulse ── */
+    @keyframes statPulse { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+    .stat-number.counted { animation: statPulse 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- Nav injected by components.js -->
+
+  <!-- ── HERO ──────────────────────────────────── -->
+  <section class="hero" aria-label="Five Space World — Architecture practice">
+
+    <!-- Sonar: !important overrides main.css hero child position:relative rule -->
+    <div class="hero-sonar" aria-hidden="true">
+      <div class="sonar-ring sonar-ring-1"></div>
+      <div class="sonar-ring sonar-ring-2"></div>
+      <div class="sonar-ring sonar-ring-3"></div>
+    </div>
+
+    <p class="hero-eyebrow">Five Space World</p>
+
+    <h1 class="hero-title" aria-label="Architecture at the scale of civilisation">
+      <span class="hero-line">Architecture</span>
+      <span class="hero-line hero-line-indent">at the scale</span>
+      <span class="hero-line">of civilisation</span>
+    </h1>
+
+    <p class="hero-subtitle hero-subtitle-links">
+      <a href="#five-spaces">Knowledge</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Community</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Learning</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Productive</a>
+      <span aria-hidden="true"> · </span>
+      <a href="#five-spaces">Residential</a>
+    </p>
+
+    <a href="#work" class="btn-outline hero-cta" style="margin-top: var(--space-md);">View Our Work</a>
+
+    <div class="hero-marquee" aria-hidden="true">
+      <div class="hero-marquee-track">
+        <span>Knowledge Spaces</span><span class="marquee-dot">·</span>
+        <span>Community Spaces</span><span class="marquee-dot">·</span>
+        <span>Learning Spaces</span><span class="marquee-dot">·</span>
+        <span>Productive Spaces</span><span class="marquee-dot">·</span>
+        <span>Residential Spaces</span><span class="marquee-dot">·</span>
+        <span>Knowledge Spaces</span><span class="marquee-dot">·</span>
+        <span>Community Spaces</span><span class="marquee-dot">·</span>
+        <span>Learning Spaces</span><span class="marquee-dot">·</span>
+        <span>Productive Spaces</span><span class="marquee-dot">·</span>
+        <span>Residential Spaces</span><span class="marquee-dot">·</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED WORK ──────────────────────────── -->
+  <section class="scroll-target" id="work" aria-label="Featured projects">
+    <div class="wrap">
+      <p class="section-label">Selected Work</p>
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; color:var(--sky-dk);">Projects</h2>
+      <div class="featured-grid" id="featuredProjects">
+        <div class="project-skeleton"></div>
+        <div class="project-skeleton"></div>
+        <div class="project-skeleton"></div>
+      </div>
+      <div style="text-align:center; margin-top:var(--space-lg);">
+        <a href="projects" class="btn-outline">All Projects</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ──────────────────────────────────────────────────────
+       FIX: global `section` rule applies padding: 7rem top & bottom.
+       Inline override collapses dead space above and below the bar.
+  ─────────────────────────────────────────────────────────────────── -->
+  <section
+    class="scroll-target"
+    aria-label="Practice statistics"
+    style="padding-top: var(--space-md); padding-bottom: var(--space-md);"
+  >
+    <div class="wrap">
+      <div class="stats-bar" style="background:linear-gradient(90deg,#2A7FBA 0%,#1A5276 100%);">
+        <div class="stat-item">
+          <div class="stat-number" data-count="15" data-suffix="+">15+</div>
+          <div class="stat-label">Years of Practice</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="60" data-suffix="+">60+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="12" data-suffix="">12</div>
+          <div class="stat-label">Countries</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="8" data-suffix="">8</div>
+          <div class="stat-label">Awards</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FIVE SPACES ────────────────────────────── -->
+  <section class="scroll-target" id="five-spaces" aria-label="The five spaces we design">
+    <div class="wrap">
+      <p class="section-label">What We Design</p>
+      <div class="five-spaces-intro">
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; color:var(--sky-dk);">
+          Five spaces that make<br><em>cities whole</em>
+        </h2>
+        <p>
+          The name is intentional. Every city is held together by five kinds of space — where knowledge is preserved, where communities gather, where people learn, where they work and trade, and where they make their homes. We design all five, from civic scale to the private interior.
+        </p>
+      </div>
+
+      <div class="five-spaces-grid">
+
+        <a class="five-space-card" href="/projects?cat=Knowledge+Spaces" aria-label="View Knowledge Spaces projects">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h10v20H4z"/><path d="M18 6h10v20H18z"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="18" y1="12" x2="28" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/><line x1="18" y1="18" x2="28" y2="18"/>
+          </svg>
+          <div class="five-space-number">01</div>
+          <div class="five-space-name">Knowledge<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">Museums<br>Libraries<br>Cultural Centres<br>Archives</div>
+        </a>
+
+        <a class="five-space-card" href="/projects?cat=Community+Spaces" aria-label="View Community Spaces projects">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="16,3 2,10 30,10"/><rect x="2" y="26" width="28" height="3"/><line x1="6" y1="10" x2="6" y2="26"/><line x1="12" y1="10" x2="12" y2="26"/><line x1="20" y1="10" x2="20" y2="26"/><line x1="26" y1="10" x2="26" y2="26"/>
+          </svg>
+          <div class="five-space-number">02</div>
+          <div class="five-space-name">Community<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">Civic Halls<br>Public Buildings<br>Places of Worship<br>Community Centres</div>
+        </a>
+
+        <a class="five-space-card" href="/projects?cat=Learning+Spaces" aria-label="View Learning Spaces projects">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4L2 11l14 7 14-7z"/><path d="M8 15v7a8 8 0 0016 0v-7"/><line x1="28" y1="11" x2="28" y2="20"/><circle cx="28" cy="21" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <div class="five-space-number">03</div>
+          <div class="five-space-name">Learning<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">Schools<br>Universities<br>Campuses<br>Research Institutes</div>
+        </a>
+
+        <a class="five-space-card" href="/projects?cat=Productive+Spaces" aria-label="View Productive Spaces projects">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="15" height="24"/><rect x="18" y="11" width="11" height="18"/><line x1="3" y1="10" x2="18" y2="10"/><line x1="3" y1="15" x2="18" y2="15"/><line x1="3" y1="20" x2="18" y2="20"/><line x1="8" y1="5" x2="8" y2="29"/><line x1="13" y1="5" x2="13" y2="29"/><line x1="22" y1="15" x2="22" y2="29"/><rect x="9" y="22" width="5" height="7" fill="currentColor" stroke="none" opacity="0.15"/>
+          </svg>
+          <div class="five-space-number">04</div>
+          <div class="five-space-name">Productive<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">Corporate Offices<br>Retail Architecture<br>Mixed-Use Buildings<br>Studio Buildings<br>Market Halls</div>
+        </a>
+
+        <a class="five-space-card" href="/projects?cat=Residential+Spaces" aria-label="View Residential Spaces projects">
+          <svg class="five-space-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 16L16 4l14 12"/><rect x="4" y="16" width="24" height="13"/><line x1="16" y1="16" x2="16" y2="29"/><rect x="6" y="18" width="5" height="5"/><rect x="21" y="18" width="5" height="5"/><rect x="12" y="22" width="8" height="7"/><path d="M10 4.5v3M22 4.5v3"/>
+          </svg>
+          <div class="five-space-number">05</div>
+          <div class="five-space-name">Residential<br>Spaces</div>
+          <span class="five-space-dash"></span>
+          <div class="five-space-types">Private Villas<br>Housing Developments<br>Apartment Buildings<br>Bespoke Interiors<br>Landscape &amp; Grounds</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHILOSOPHY ─────────────────────────────── -->
+  <section class="scroll-target" aria-label="Design philosophy">
+    <div class="wrap">
+      <p class="section-label">Our Approach</p>
+      <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,4rem); font-weight:400; max-width:700px; color:var(--sky-dk);">
+        Buildings that outlast their moment
+      </h2>
+      <p style="max-width:600px; margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">
+        We believe that civic and cultural architecture carries a special responsibility — to speak not just to its present users but to future generations. Every Five Space World project begins with a question: what endures?
+      </p>
+      <div class="philosophy-grid">
+        <div class="philosophy-item">
+          <h4><svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l5 3"/></svg>Public Scale</h4>
+          <p>We design at the scale of institutions — cultural centres, civic halls, libraries, and infrastructure — spaces that become part of the city's identity.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4><svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Material Honesty</h4>
+          <p>Concrete that shows its formwork. Stone that carries the quarry. Timber that remembers the forest. We never disguise what a building is made of.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4><svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12,2 2,19 22,19"/><line x1="12" y1="10" x2="12" y2="15"/><circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none"/></svg>Enduring Form</h4>
+          <p>Trends corrode. Geometry endures. Our formal language is rooted in proportional systems that have proven themselves across centuries.</p>
+        </div>
+        <div class="philosophy-item">
+          <h4><svg class="philosophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Community First</h4>
+          <p>Every building exists in a community. We spend as much time listening to those who will inhabit our buildings as we do drawing them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ───────────────────────────────────── -->
+  <section class="scroll-target" id="about" aria-label="About the practice">
+    <div class="about-grid">
+      <div>
+        <p class="section-label">The Practice</p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,5vw,3.5rem); font-weight:400; color:var(--sky-dk);">Five Space World</h2>
+      </div>
+      <div>
+        <p style="font-size:1.05rem; line-height:1.9; color:var(--slate);">Five Space World was founded on the belief that architecture is the most public of arts. Unlike a painting or a poem, a building cannot be avoided — it occupies the shared world, shaping the experience of everyone who passes through or near it.</p>
+        <p style="margin-top:var(--space-sm); line-height:1.9; color:var(--slate);">Our work spans all five spaces of civic life — knowledge institutions, community buildings, educational campuses, productive environments for work and commerce, and residential architecture from private villas to housing at scale. We approach each project as a long-term investment in the places and communities we serve.</p>
+        <p style="margin-top:var(--space-md); font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--sky-lt);">
+          Sister practice: <a href="https://safa.zahan.one" style="color:var(--sky); text-decoration:underline; text-underline-offset:3px;">Safa Zahan</a> — hospitality, luxury residences &amp; bespoke interiors
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ─────────────────────────────────── -->
+  <section class="scroll-target" id="contact" aria-label="Contact the practice">
+    <div class="contact-section">
+      <div class="contact-info">
+        <p class="section-label">Get in Touch</p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:400; color:var(--sky-dk);">Start a conversation</h2>
+        <p style="margin-top:var(--space-sm); color:var(--slate); line-height:1.9;">We work on a select number of projects at a time. If you are planning a civic, cultural, institutional, productive, or residential project — at any scale — we would like to hear from you.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-item">
+            <span class="label">Email</span>
+            <span class="value" id="contact-email"></span>
+          </div>
+          <div class="contact-detail-item">
+            <span class="label">Location</span>
+            <span class="value">Mumbai, India</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="formSuccess" style="display:none; padding:var(--space-md); background:#1A5276; color:#FFFFFF; font-size:0.9rem; letter-spacing:0.05em; margin-bottom:var(--space-md); border-left:3px solid #2A7FBA;">
+          ✓ &nbsp;Thank you. We will be in touch shortly.
+        </div>
+        <form id="contactForm" novalidate aria-label="Project enquiry form">
+          <div style="position:absolute; left:-9999px;" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group"><label for="first_name">First Name *</label><input type="text" id="first_name" name="first_name" required /></div>
+            <div class="form-group"><label for="last_name">Last Name *</label><input type="text" id="last_name" name="last_name" required /></div>
+          </div>
+          <div class="form-group"><label for="email">Email *</label><input type="email" id="email" name="email" required /></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label for="project_type">Project Type</label>
+              <select id="project_type" name="project_type">
+                <option value="">Select…</option>
+                <optgroup label="Knowledge Spaces"><option>Museum</option><option>Library</option><option>Cultural Centre</option><option>Archive</option></optgroup>
+                <optgroup label="Community Spaces"><option>Civic Building</option><option>Community Centre</option><option>Place of Worship</option><option>Public Infrastructure</option></optgroup>
+                <optgroup label="Learning Spaces"><option>School</option><option>University / Campus</option><option>Research Institute</option></optgroup>
+                <optgroup label="Productive Spaces"><option>Corporate Office</option><option>Workspace Fit-out</option><option>Studio Building</option><option>Retail Architecture</option><option>Mixed-Use Building</option><option>Commercial Centre</option><option>Market Hall</option></optgroup>
+                <optgroup label="Residential Spaces"><option>Private Villa</option><option>Housing Development</option><option>Apartment Building</option><option>Bespoke Interior</option><option>Private Home</option></optgroup>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label for="location">Project Location</label><input type="text" id="location" name="location" placeholder="City, Country" /></div>
+          </div>
+          <div class="form-group"><label for="message">Message *</label><textarea id="message" name="message" style="min-height:120px;" required placeholder="Tell us about your project — scale, programme, timeline, budget range…"></textarea></div>
+          <button type="submit" class="btn-primary" id="submitBtn" style="width:100%;">Send Enquiry</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer injected by components.js -->
+  <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+  <script>
+    window.addEventListener('load', () => document.body.classList.add('loaded'));
+    if (document.readyState === 'complete') document.body.classList.add('loaded');
+  </script>
+  <script src="env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('loaded');
+      initComponents({ activePage: 'home' });
+
+      // ── Space card stagger entrance
+      const cardObserver = new IntersectionObserver(entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.five-space-card').forEach((card, i) => setTimeout(() => card.classList.add('card-visible'), i * 100));
+          cardObserver.unobserve(e.target);
+        }
+      }), { threshold: 0.1 });
+      const spaceGrid = document.querySelector('.five-spaces-grid');
+      if (spaceGrid) cardObserver.observe(spaceGrid);
+
+      // ── Scroll animations
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 }
+      );
+      document.querySelectorAll('.scroll-target').forEach(el => observer.observe(el));
+      setTimeout(() => document.querySelectorAll('.scroll-target:not(.visible)').forEach(el => el.classList.add('visible')), 2000);
+
+      // ── Back to top
+      const backTop = document.getElementById('backTop');
+      window.addEventListener('scroll', () => backTop.classList.toggle('visible', window.scrollY > 400));
+      backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // ── Form validation
+      function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+      function setFieldState(el, valid) { el.classList.toggle('invalid', !valid); el.setAttribute('aria-invalid', String(!valid)); }
+      document.querySelectorAll('#contactForm [required]').forEach(el => {
+        el.addEventListener('blur', () => setFieldState(el, el.type === 'email' ? validateEmail(el.value) : el.value.trim().length > 0));
+        el.addEventListener('input', () => { if (el.classList.contains('invalid')) setFieldState(el, true); });
+      });
+      document.getElementById('contactForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        if (e.target.website && e.target.website.value) { e.target.style.display = 'none'; document.getElementById('formSuccess').style.display = 'block'; return; }
+        let valid = true;
+        document.querySelectorAll('#contactForm [required]').forEach(el => { const ok = el.type === 'email' ? validateEmail(el.value) : el.value.trim().length > 0; setFieldState(el, ok); if (!ok) valid = false; });
+        if (!valid) return;
+        const btn = document.getElementById('submitBtn');
+        btn.textContent = 'Sending…'; btn.disabled = true;
+        try {
+          const formData = { first_name: e.target.first_name.value, last_name: e.target.last_name.value, email: e.target.email.value, project_type: e.target.project_type.value, location: e.target.location.value, message: e.target.message.value };
+          await submitContactForm(formData);
+          try {
+            const emailRes = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formData, brand: SITE_CONFIG.brand }) });
+            if (!emailRes.ok) console.warn('Email API error:', await emailRes.json());
+          } catch (emailErr) { console.warn('Email notification failed:', emailErr); }
+          e.target.style.display = 'none';
+          document.getElementById('formSuccess').style.display = 'block';
+        } catch (err) { console.error(err); btn.textContent = 'Send Enquiry'; btn.disabled = false; alert('There was a problem sending your message. Please try again or email us directly.'); }
+      });
+    });
+
+    // ── Stats counter
+    function animateCounter(el) {
+      var target=parseInt(el.dataset.count,10),suffix=el.dataset.suffix||'',dur=1800,s=performance.now();
+      function ease(t){return t===1?1:1-Math.pow(2,-10*t);}
+      (function step(now){var p=Math.min((now-s)/dur,1);el.textContent=Math.round(ease(p)*target)+suffix;if(p<1)requestAnimationFrame(step);else{el.textContent=target+suffix;el.classList.add('counted');}})(s);
+    }
+    var _sb=document.querySelector('.stats-bar');
+    if(_sb){new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.querySelectorAll('.stat-number[data-count]').forEach(function(el,i){if(!el.dataset.animated){el.dataset.animated='1';setTimeout(function(){animateCounter(el);},i*180);}});}});},{threshold:0.4}).observe(_sb);}
+
+    // ── Featured projects — hides entire section if empty (no dead space)
+    async function loadFeaturedProjects() {
+      const container = document.getElementById('featuredProjects');
+      if (!container) return;
+      try {
+        const projects = await getProjects(true);
+        if (!projects.length) { const s = document.getElementById('work'); if (s) s.style.display = 'none'; return; }
+        container.innerHTML = projects.slice(0, 3).map(p => `
+          <a class="project-card" href="project.html?slug=${p.slug}" aria-label="View project: ${p.title}">
+            <div style="overflow:hidden;"><img class="project-card-img" src="${p.main_image_url || ''}" alt="${p.title}" loading="lazy" /></div>
+            <div class="project-card-body">
+              <h3 class="project-card-title">${p.title}</h3>
+              <p class="project-card-meta">${[p.location, p.year, p.category].filter(Boolean).join(' · ')}</p>
+            </div>
+          </a>`).join('');
+      } catch (err) { console.warn('Could not load featured projects:', err); }
+    }
+    loadFeaturedProjects();
+  </script>
+  <script>
+    (function() {
+      var u='fsw',d='mail.zahan.one',el=document.getElementById('contact-email');
+      if(el){var a=document.createElement('a');a.href='mailto:'+u+'@'+d;a.textContent=u+'@'+d;a.style.color='inherit';el.appendChild(a);}
+    })();
+  </script>
+</body>
+</html>
